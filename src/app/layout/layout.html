@@ -1,0 +1,402 @@
+<!-- ================= HEADER ================= -->
+
+<header
+  class="fixed
+         top-0
+         left-0
+         right-0
+         z-[100]
+         h-20
+         bg-slate-900
+         text-white
+         px-4
+         sm:px-6
+         flex
+         items-center
+         justify-between
+         shadow-md">
+
+  <!-- LEFT SIDE -->
+
+  <div class="flex items-center gap-3">
+
+    <!-- MENU -->
+
+    <button
+      mat-icon-button
+      (click)="toggleSidebar()"
+      matTooltip="Menu"
+      matTooltipPosition="right"
+      class="!text-white
+             !w-11
+             !h-11
+             !p-0
+             !-ml-2
+             hover:!bg-slate-800
+             flex
+             items-center
+             justify-center">
+
+      <mat-icon>
+        menu
+      </mat-icon>
+
+    </button>
+
+
+    <!-- JOBTRACK LOGO -->
+
+    <div class="flex items-center gap-3">
+
+      <div
+        class="w-10
+               h-10
+               bg-violet-600
+               rounded-xl
+               flex
+               items-center
+               justify-center
+               font-bold
+               text-lg
+               text-white">
+
+        J
+
+      </div>
+
+
+      <span
+        class="text-lg
+               sm:text-xl
+               font-bold
+               text-white">
+
+        JobTrack
+
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- RIGHT SIDE -->
+
+  <div
+    class="flex
+           items-center
+           gap-1
+           sm:gap-2">
+
+
+  
+
+    <!-- SEARCH -->
+
+<div class="flex items-center">
+
+  @if (searchOpen()) {
+
+    <mat-form-field
+  appearance="outline"
+  class="global-search-field w-56 !mb-[-1.25em]">
+
+      <mat-label>Search Applications</mat-label>
+
+      <input
+        #searchInput
+        matInput
+        type="text"
+        [ngModel]="globalSearch()"
+        (ngModelChange)="globalSearch.set($event)"
+        (keyup.enter)="searchApplications()"
+        placeholder="Search applications...">
+
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        matTooltip="Close Search"
+        matTooltipPosition="below"
+        (click)="closeSearch()"
+        class="!text-white">
+
+        <mat-icon>
+          close
+        </mat-icon>
+
+      </button>
+
+    </mat-form-field>
+
+  } @else {
+
+    <button
+      mat-icon-button
+      type="button"
+      matTooltip="Search Applications"
+      matTooltipPosition="below"
+      (click)="toggleSearch()"
+      class="!text-white
+             hover:!bg-slate-800">
+
+      <mat-icon>
+        search
+      </mat-icon>
+
+    </button>
+
+  }
+
+</div>
+
+
+    <!-- NOTIFICATIONS -->
+
+    <button
+      mat-icon-button
+      matTooltip="Notifications"
+      matTooltipPosition="below"
+      class="!text-white
+             hover:!bg-slate-800">
+
+      <mat-icon>
+        notifications
+      </mat-icon>
+
+    </button>
+
+    <!-- PROFILE -->
+
+<button
+  type="button"
+  [matMenuTriggerFor]="profileMenu"
+  matTooltip="{{ userName() }}"
+  matTooltipPosition="below"
+  class="w-10
+         h-10
+         rounded-xl
+         bg-violet-600
+         flex
+         items-center
+         justify-center
+         text-white
+         font-bold
+         text-lg
+         hover:bg-violet-700
+         transition
+         cursor-pointer">
+
+  {{ userName().charAt(0).toUpperCase() }}
+
+</button>
+
+<mat-menu #profileMenu="matMenu">
+
+  <div class="px-4 py-2 text-sm text-slate-600">
+    {{ userName() }}
+  </div>
+
+  <button
+    mat-menu-item
+    (click)="logout()">
+
+    <mat-icon>logout</mat-icon>
+    <span>Logout</span>
+
+  </button>
+
+</mat-menu>
+
+  </div>
+
+</header>
+
+
+
+<!-- ================= MAIN LAYOUT ================= -->
+
+<div
+  class="fixed
+         top-20
+         left-0
+         right-0
+         bottom-0
+         flex
+         bg-slate-50
+         overflow-hidden">
+
+
+  <!-- ================= SIDEBAR ================= -->
+
+  <aside
+    class="h-full
+           bg-slate-900
+           text-white
+           shrink-0
+           transition-all
+           duration-300
+           ease-in-out
+           overflow-hidden"
+    [class.w-[72px]]="!sidebarExpanded()"
+    [class.w-60]="sidebarExpanded()">
+
+
+    <!-- ================= NAVIGATION ================= -->
+
+    <nav class="p-3 space-y-2">
+
+
+      <!-- ================= DASHBOARD ================= -->
+
+      <a
+  routerLink="/dashboard"
+  (click)="collapseSidebar()"
+  matTooltip="Dashboard"
+  matTooltipPosition="right"
+  class="flex
+         items-center
+         h-12
+         rounded-lg
+         text-slate-300
+         hover:bg-slate-800
+         hover:text-white
+         transition-colors"
+  [class.justify-center]="!sidebarExpanded()"
+  [class.gap-3]="sidebarExpanded()"
+  [class.px-4]="sidebarExpanded()">
+
+  <mat-icon class="shrink-0">
+    dashboard
+  </mat-icon>
+
+  @if (sidebarExpanded()) {
+    <span class="whitespace-nowrap">
+      Dashboard
+    </span>
+  }
+
+</a>
+
+
+
+      <!-- ================= APPLICATIONS ================= -->
+
+      <a
+  routerLink="/applications"
+  (click)="collapseSidebar()"
+  matTooltip="Applications"
+  matTooltipPosition="right"
+  class="flex
+         items-center
+         h-12
+         rounded-lg
+         text-slate-300
+         hover:bg-slate-800
+         hover:text-white
+         transition-colors"
+  [class.justify-center]="!sidebarExpanded()"
+  [class.gap-3]="sidebarExpanded()"
+  [class.px-4]="sidebarExpanded()">
+
+  <mat-icon class="shrink-0">
+    work
+  </mat-icon>
+
+  @if (sidebarExpanded()) {
+    <span class="whitespace-nowrap">
+      Applications
+    </span>
+  }
+
+</a>
+
+
+
+      <!-- ================= ADD APPLICATION ================= -->
+
+      <a
+  routerLink="/add-applications"
+  (click)="collapseSidebar()"
+  matTooltip="Add Application"
+  matTooltipPosition="right"
+  class="flex
+         items-center
+         h-12
+         rounded-lg
+         text-slate-300
+         hover:bg-slate-800
+         hover:text-white
+         transition-colors"
+  [class.justify-center]="!sidebarExpanded()"
+  [class.gap-3]="sidebarExpanded()"
+  [class.px-4]="sidebarExpanded()">
+
+  <mat-icon class="shrink-0">
+    add_circle
+  </mat-icon>
+
+  @if (sidebarExpanded()) {
+    <span class="whitespace-nowrap">
+      Add Application
+    </span>
+  }
+
+</a>
+
+
+
+      <!-- ================= SETTINGS ================= -->
+
+      <a
+  routerLink="/settings"
+  (click)="collapseSidebar()"
+  matTooltip="Settings"
+  matTooltipPosition="right"
+  class="flex
+         items-center
+         h-12
+         rounded-lg
+         text-slate-300
+         hover:bg-slate-800
+         hover:text-white
+         transition-colors"
+  [class.justify-center]="!sidebarExpanded()"
+  [class.gap-3]="sidebarExpanded()"
+  [class.px-4]="sidebarExpanded()">
+
+  <mat-icon class="shrink-0">
+    settings
+  </mat-icon>
+
+  @if (sidebarExpanded()) {
+    <span class="whitespace-nowrap">
+      Settings
+    </span>
+  }
+
+</a>
+
+    </nav>
+
+  </aside>
+
+
+
+  <!-- ================= PAGE CONTENT ================= -->
+
+  <main
+    class="flex-1
+           min-w-0
+           h-full
+           overflow-y-auto
+           bg-slate-50
+           p-4
+           sm:p-5
+           md:p-6">
+
+    <router-outlet></router-outlet>
+
+  </main>
+
+</div>

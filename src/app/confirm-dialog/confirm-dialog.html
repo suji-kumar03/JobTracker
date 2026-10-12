@@ -1,0 +1,82 @@
+<div class="p-1">
+
+  <!-- Header -->
+  <div class="flex items-center gap-3 px-4 pt-4 pb-2">
+
+    <div
+      class="w-10 h-10 rounded-full
+             bg-red-100
+             flex items-center justify-center
+             shrink-0">
+
+      <mat-icon class="!text-red-500">
+        warning
+      </mat-icon>
+
+    </div>
+
+    <h2
+      class="!m-0
+             text-lg
+             font-semibold
+             text-slate-800">
+
+      {{ data.title }}
+
+    </h2>
+
+  </div>
+
+
+  <!-- Message -->
+  <div class="px-4 pt-2 pb-5">
+
+    <p class="text-sm text-slate-600">
+      {{ data.message }}
+    </p>
+
+  </div>
+
+
+  <!-- Actions -->
+  <!-- Actions -->
+<div
+  class="flex justify-end items-center
+         gap-3
+         px-4 pb-4">
+
+  <!-- Cancel -->
+  <button
+    mat-button
+    type="button"
+    (click)="cancel()"
+    class="!px-5 !rounded-lg
+           !text-slate-600
+           hover:!bg-slate-100">
+
+    Cancel
+
+  </button>
+
+
+  <!-- Confirm -->
+  <button
+    mat-flat-button
+    type="button"
+    (click)="confirm()"
+    class="!px-5 !rounded-lg
+           !bg-red-500
+           hover:!bg-red-600
+           !text-white">
+
+    <mat-icon class="!text-white !mr-1">
+      {{ data.confirmText === 'Delete' ? 'delete' : 'edit' }}
+    </mat-icon>
+
+    {{ data.confirmText }}
+
+  </button>
+
+</div>
+
+</div>

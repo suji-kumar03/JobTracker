@@ -1,0 +1,229 @@
+<div class="w-full">
+
+  <!-- Back -->
+  <div class="mb-5">
+
+    <button
+      type="button"
+      routerLink="/applications"
+      class="flex items-center gap-2
+             text-sm text-slate-600
+             hover:text-violet-600
+             transition">
+
+      ← Back to Applications
+
+    </button>
+
+  </div>
+
+
+  @if (application()) {
+
+    <!-- Application Header -->
+    <div
+      class="bg-white rounded-xl
+             border border-slate-200
+             shadow-sm p-6 mb-6">
+
+      <div class="flex flex-col md:flex-row
+                  md:items-center
+                  md:justify-between gap-4">
+
+        <div>
+
+          <h1 class="text-2xl font-bold text-slate-800">
+            {{ application()!.jobTitle }}
+          </h1>
+
+          <p class="text-slate-500 mt-1">
+            {{ application()!.company }}
+          </p>
+
+        </div>
+
+
+        <!-- Status -->
+        <span
+          class="inline-flex items-center
+                 w-fit px-3 py-1.5
+                 rounded-full
+                 text-sm font-medium"
+          [class.bg-blue-100]="application()!.status === 'Applied'"
+          [class.text-blue-700]="application()!.status === 'Applied'"
+          [class.bg-yellow-100]="application()!.status === 'Interview'"
+          [class.text-yellow-700]="application()!.status === 'Interview'"
+          [class.bg-green-100]="application()!.status === 'Selected'"
+          [class.text-green-700]="application()!.status === 'Selected'"
+          [class.bg-red-100]="application()!.status === 'Rejected'"
+          [class.text-red-700]="application()!.status === 'Rejected'">
+
+          {{ application()!.status }}
+
+        </span>
+
+      </div>
+
+
+      <!-- Basic Details -->
+      <div
+        class="grid grid-cols-1
+               md:grid-cols-3
+               gap-5 mt-6
+               pt-5 border-t border-slate-100">
+
+        <!-- Job Type -->
+        <div>
+
+          <p class="text-xs text-slate-400 mb-1">
+            Job Type
+          </p>
+
+          <p class="text-sm font-medium text-slate-700">
+            {{ application()!.jobType }}
+          </p>
+
+        </div>
+
+
+        <!-- Location -->
+        <div>
+
+          <p class="text-xs text-slate-400 mb-1">
+            Location
+          </p>
+
+          <p class="text-sm font-medium text-slate-700">
+            {{ application()!.location || 'Not specified' }}
+          </p>
+
+        </div>
+
+
+        <!-- Applied Date -->
+        <div>
+
+          <p class="text-xs text-slate-400 mb-1">
+            Applied Date
+          </p>
+
+          <p class="text-sm font-medium text-slate-700">
+            {{ application()!.appliedDate }}
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Description -->
+ <!-- Job Description -->
+<div
+  class="bg-white rounded-xl
+         border border-slate-200
+         shadow-sm p-6 mb-6">
+
+  <h2 class="text-lg font-semibold text-slate-800 mb-4">
+    Job Description
+  </h2>
+
+  <p class="text-sm text-slate-600 leading-6">
+    {{ application()!.description || 'No description added.' }}
+  </p>
+
+</div>
+
+
+<!-- Requirements -->
+<div
+  class="bg-white rounded-xl
+         border border-slate-200
+         shadow-sm p-6 mb-6">
+
+  <h2 class="text-lg font-semibold text-slate-800 mb-4">
+    Requirements
+  </h2>
+
+  @if (application()!.requirements) {
+
+    <p class="text-sm text-slate-600 leading-6 whitespace-pre-line">
+      {{ application()!.requirements }}
+    </p>
+
+  } @else {
+
+    <p class="text-sm text-slate-400">
+      No requirements added.
+    </p>
+
+  }
+
+</div>
+
+
+    <!-- Actions -->
+    <div
+      class="flex flex-col sm:flex-row
+             justify-end gap-3">
+
+      <button
+        type="button"
+        (click)="deleteApplication()"
+        class="px-6 py-3 rounded-lg
+               border border-red-300
+               text-red-600
+               font-medium
+               hover:bg-red-50
+               transition">
+
+        Delete
+
+      </button>
+
+
+      <button
+        type="button"
+        (click)="editApplication()"
+        class="px-6 py-3 rounded-lg
+               bg-violet-600
+               text-white
+               font-semibold
+               hover:bg-violet-700
+               transition">
+
+        Edit Application
+
+      </button>
+
+    </div>
+
+  } @else {
+
+    <!-- Application not found -->
+    <div
+      class="bg-white rounded-xl
+             border border-slate-200
+             p-10 text-center">
+
+      <p class="text-slate-500">
+        Application not found.
+      </p>
+
+      <button
+        type="button"
+        routerLink="/applications"
+        class="mt-4 text-violet-600
+               hover:text-violet-700
+               font-medium">
+
+        Back to Applications
+
+      </button>
+
+    </div>
+
+  }
+
+</div>

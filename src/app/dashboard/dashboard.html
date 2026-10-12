@@ -1,0 +1,284 @@
+<div class="w-full">
+
+  <!-- HEADER -->
+  <div class="mb-6">
+
+    <h2 class="text-xl sm:text-2xl font-bold text-slate-800">
+      Dashboard
+    </h2>
+
+    <p class="text-sm text-slate-500 mt-1">
+      Overview of your job applications
+    </p>
+
+  </div>
+
+
+  <!-- STAT CARDS -->
+  <div
+    class="grid
+           grid-cols-1
+           
+           sm:grid-cols-2
+           lg:grid-cols-5
+           gap-3 sm:gap-4">
+
+    <div class="bg-white rounded-xl shadow-sm p-4">
+      <p class="text-sm text-slate-500">
+        Total Applications
+      </p>
+
+      <h3 class="text-xl sm:text-2xl font-bold mt-2">
+        {{ totalApplications() }}
+      </h3>
+    </div>
+
+
+    <div class="bg-white rounded-xl shadow-sm p-4">
+      <p class="text-sm text-slate-500">
+        Applied
+      </p>
+
+      <h3 class="text-xl sm:text-2xl font-bold text-blue-600 mt-2">
+        {{ appliedCount() }}
+      </h3>
+    </div>
+
+
+    <div class="bg-white rounded-xl shadow-sm p-4">
+      <p class="text-sm text-slate-500">
+        Interview
+      </p>
+
+      <h3 class="text-xl sm:text-2xl font-bold text-purple-600 mt-2">
+        {{ interviewCount() }}
+      </h3>
+    </div>
+
+
+    <div class="bg-white rounded-xl shadow-sm p-4">
+      <p class="text-sm text-slate-500">
+        Selected
+      </p>
+
+      <h3 class="text-xl sm:text-2xl font-bold text-green-600 mt-2">
+        {{ selectedCount() }}
+      </h3>
+    </div>
+
+
+    <div class="bg-white rounded-xl shadow-sm p-4">
+      <p class="text-sm text-slate-500">
+        Rejected
+      </p>
+
+      <h3 class="text-xl sm:text-2xl font-bold text-red-500 mt-2">
+        {{ rejectedCount() }}
+      </h3>
+    </div>
+
+  </div>
+
+
+  <!-- LOWER CONTENT -->
+  <div
+    class="grid
+           grid-cols-1
+           lg:grid-cols-2
+           gap-4 sm:gap-6
+           mt-4 sm:mt-6">
+
+
+    <!-- SUMMARY -->
+    <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+
+      <h3 class="text-lg font-semibold text-slate-800 mb-6">
+        Application Summary
+      </h3>
+
+
+      <div class="flex justify-center">
+
+        <div
+          class="w-36 h-36 sm:w-44 sm:h-44
+                 rounded-full
+                 bg-gradient-to-r
+                 from-violet-600
+                 via-blue-500
+                 to-green-400
+                 flex items-center justify-center">
+
+          <div
+            class="w-24 h-24 sm:w-28 sm:h-28
+                   bg-white rounded-full
+                   flex flex-col items-center justify-center">
+
+            <span class="text-2xl sm:text-3xl font-bold">
+              {{ totalApplications() }}
+            </span>
+
+            <span class="text-xs text-slate-500">
+              Total
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="mt-6 space-y-3">
+
+        <div class="flex justify-between text-sm">
+          <span class="text-slate-600">
+            Applied
+          </span>
+
+          <span class="font-semibold">
+            {{ appliedCount() }}
+          </span>
+        </div>
+
+        <div class="flex justify-between text-sm">
+          <span class="text-slate-600">
+            Interview
+          </span>
+
+          <span class="font-semibold">
+            {{ interviewCount() }}
+          </span>
+        </div>
+
+        <div class="flex justify-between text-sm">
+          <span class="text-slate-600">
+            Selected
+          </span>
+
+          <span class="font-semibold">
+            {{ selectedCount() }}
+          </span>
+        </div>
+
+        <div class="flex justify-between text-sm">
+          <span class="text-slate-600">
+            Rejected
+          </span>
+
+          <span class="font-semibold">
+            {{ rejectedCount() }}
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- RECENT APPLICATIONS -->
+    <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+
+      <div class="flex items-center justify-between mb-5">
+
+        <h3 class="text-lg font-semibold text-slate-800">
+          Recent Applications
+        </h3>
+
+       <a
+  routerLink="/applications"
+  class="text-sm text-violet-600 font-semibold
+         hover:text-violet-700">
+  View All
+  </a>
+
+      </div>
+
+
+      <div class="space-y-4">
+
+        @for (app of recentApplications(); track app.id) {
+
+          <div
+            class="flex flex-col
+                   sm:flex-row
+                   sm:items-center
+                   sm:justify-between
+                   gap-2
+                   border-b border-slate-100
+                   pb-3">
+
+            <div class="min-w-0">
+
+              <p class="font-medium text-slate-800 truncate">
+                {{ app.jobTitle }}
+              </p>
+
+              <p class="text-sm text-slate-500 truncate">
+                {{ app.company }}
+              </p>
+
+            </div>
+
+
+            @if (app.status === 'Applied') {
+
+              <span
+                class="self-start
+                       text-xs px-3 py-1
+                       rounded-full
+                       bg-blue-100 text-blue-700">
+                {{ app.status }}
+              </span>
+
+            }
+
+            @if (app.status === 'Interview') {
+
+              <span
+                class="self-start
+                       text-xs px-3 py-1
+                       rounded-full
+                       bg-purple-100 text-purple-700">
+                {{ app.status }}
+              </span>
+
+            }
+
+            @if (app.status === 'Selected') {
+
+              <span
+                class="self-start
+                       text-xs px-3 py-1
+                       rounded-full
+                       bg-green-100 text-green-700">
+                {{ app.status }}
+              </span>
+
+            }
+
+            @if (app.status === 'Rejected') {
+
+              <span
+                class="self-start
+                       text-xs px-3 py-1
+                       rounded-full
+                       bg-red-100 text-red-700">
+                {{ app.status }}
+              </span>
+
+            }
+
+          </div>
+
+        }
+
+      </div>
+
+    </div>
+
+  </div>
+ 
+
+ 
+
+</div>

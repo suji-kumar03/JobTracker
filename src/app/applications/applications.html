@@ -1,0 +1,399 @@
+<div class="w-full">
+
+
+ 
+
+
+  <!-- Main Content -->
+  
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+
+      <div>
+        <h2 class="text-2xl font-bold text-slate-800">
+          My Applications
+        </h2>
+
+        <p class="text-sm text-slate-500">
+          Manage your job applications
+        </p>
+      </div>
+
+      
+
+    </div>
+
+
+
+<!-- Search + Filters -->
+<div class="bg-white rounded-xl shadow-sm p-5 mb-6">
+
+  <div class="grid md:grid-cols-3 gap-4">
+
+    <!-- Status -->
+    <mat-form-field appearance="outline" class="w-full">
+
+      <mat-label>Status</mat-label>
+
+      <mat-select
+        [ngModel]="selectedStatus()"
+        (ngModelChange)="selectedStatus.set($event)">
+
+        <mat-option value="All Status">
+          All Status
+        </mat-option>
+
+        <mat-option value="Applied">
+          Applied
+        </mat-option>
+
+        <mat-option value="Interview">
+          Interview
+        </mat-option>
+
+        <mat-option value="Selected">
+          Selected
+        </mat-option>
+
+        <mat-option value="Rejected">
+          Rejected
+        </mat-option>
+
+      </mat-select>
+
+    </mat-form-field>
+
+
+    <!-- Job Type -->
+    <mat-form-field appearance="outline" class="w-full">
+
+      <mat-label>Job Type</mat-label>
+
+      <mat-select
+        [ngModel]="selectedType()"
+        (ngModelChange)="selectedType.set($event)">
+
+        <mat-option value="All Types">
+          All Types
+        </mat-option>
+
+        <mat-option value="Full Time">
+          Full Time
+        </mat-option>
+
+        <mat-option value="Part Time">
+          Part Time
+        </mat-option>
+
+        <mat-option value="Internship">
+          Internship
+        </mat-option>
+
+        <mat-option value="Contract">
+          Contract
+        </mat-option>
+
+      </mat-select>
+
+    </mat-form-field>
+
+
+    <!-- Search -->
+ 
+<div class="w-full">
+
+  @if (searchOpen()) {
+
+    <mat-form-field
+      appearance="outline"
+      class="w-full"
+      matTooltip="Search Applications"
+    matTooltipPosition="above">
+
+      <mat-label>Search Applications</mat-label>
+
+      <input
+        matInput
+        type="text"
+        [ngModel]="searchText()"
+        (ngModelChange)="searchSubject.next($event)"
+        placeholder="Search by job title or company">
+
+      <!-- Icons at the END -->
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        matTooltip="Close Search"
+        matTooltipPosition="above"
+        (click)="toggleSearch()">
+
+        <mat-icon>
+          close
+        </mat-icon>
+
+      </button>
+
+    </mat-form-field>
+
+  } @else {
+
+    <!-- Search icon before opening -->
+    <div class="h-14 w-full flex items-center justify-end">
+
+      <button
+        mat-icon-button
+        type="button"
+        matTooltip="Search Applications"
+        matTooltipPosition="above"
+        (click)="toggleSearch()">
+
+        <mat-icon>
+          search
+        </mat-icon>
+
+      </button>
+
+    </div>
+
+  }
+
+</div>
+
+  </div>
+
+</div>
+
+@if (jobService.isLoading()) {
+
+  <div class="bg-white rounded-xl shadow-sm py-16 text-center">
+
+    <p class="text-slate-500">
+      Loading applications...
+    </p>
+
+  </div>
+
+} @else if (jobService.apiError()) {
+
+  <div class="bg-white rounded-xl shadow-sm py-16 text-center">
+
+    <p class="text-red-500">
+      {{ jobService.apiError() }}
+    </p>
+
+  </div>
+
+} @else {
+    <!-- Applications Table -->
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+
+  <div class="overflow-x-auto">
+
+    <table
+  mat-table
+  [dataSource]="dataSource"
+  matSort
+  class="w-full table-fixed bg-white">
+
+      <!-- Number -->
+
+      <ng-container matColumnDef="number">
+
+        <th mat-header-cell *matHeaderCellDef class="w-16">
+          S.No
+        </th>
+
+        <td mat-cell *matCellDef="let app; let i = index"  class="w-16">
+
+  {{ (paginator?.pageIndex ?? 0) * (paginator?.pageSize ?? 6) + i + 1 }}
+    
+
+</td>
+
+      </ng-container>
+
+
+      <!-- Job Title -->
+
+      <ng-container matColumnDef="jobTitle">
+
+        <th
+  mat-header-cell
+  *matHeaderCellDef
+  mat-sort-header class="w-1/4">
+
+  Job Title
+
+</th>
+
+        <td
+          mat-cell
+          *matCellDef="let app"
+          class="font-medium w-1/4">
+
+          {{ app.jobTitle }}
+
+        </td>
+
+      </ng-container>
+
+
+      <!-- Company -->
+
+      <ng-container matColumnDef="company">
+
+        <th
+  mat-header-cell
+  *matHeaderCellDef
+  mat-sort-header class="w-1/4">
+
+  Company
+
+</th>
+
+        <td mat-cell *matCellDef="let app" class="w-1/4">
+
+          {{ app.company }}
+
+        </td>
+
+      </ng-container>
+
+
+      <!-- Status -->
+
+      <ng-container matColumnDef="status">
+
+        <th
+  mat-header-cell
+  *matHeaderCellDef
+  mat-sort-header class="w-1/4">
+
+  Status
+
+</th>
+
+        <td mat-cell *matCellDef="let app" class="w-1/4">
+
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+
+            [class.bg-blue-100]="app.status === 'Applied'"
+            [class.text-blue-700]="app.status === 'Applied'"
+
+            [class.bg-yellow-100]="app.status === 'Interview'"
+            [class.text-yellow-700]="app.status === 'Interview'"
+
+            [class.bg-green-100]="app.status === 'Selected'"
+            [class.text-green-700]="app.status === 'Selected'"
+
+            [class.bg-red-100]="app.status === 'Rejected'"
+            [class.text-red-700]="app.status === 'Rejected'">
+
+            {{ app.status }}
+
+          </span>
+
+        </td>
+
+      </ng-container>
+
+
+      <!-- Applied Date -->
+
+      <ng-container matColumnDef="appliedDate">
+
+        <th
+  mat-header-cell
+  *matHeaderCellDef
+  mat-sort-header class="w-1/4">
+  Scheduled Date
+</th>
+
+        <td mat-cell *matCellDef="let app" class="w-1/4">
+
+          {{ app.appliedDate }}
+
+        </td>
+
+      </ng-container>
+
+
+      <!-- Actions -->
+
+      <ng-container matColumnDef="actions">
+
+        <th mat-header-cell *matHeaderCellDef class="w-1/4">
+          Actions
+        </th>
+
+        <td mat-cell *matCellDef="let app" class="w-1/4">
+
+          <app-application-card
+            [application]="app"
+
+            (viewApplication)="viewApplication($event)"
+
+            (deleteApplication)="deleteApplication($event)"
+
+            (editApplication)="editApplication($event)">
+          </app-application-card>
+
+        </td>
+
+      </ng-container>
+
+
+      <!-- Header row -->
+
+      <tr
+  mat-header-row
+  *matHeaderRowDef="displayedColumns"
+  class="bg-slate-100">
+</tr>
+
+
+      <!-- Data row -->
+
+      <tr
+  mat-row
+  *matRowDef="let row; columns: displayedColumns"
+  class="bg-white hover:bg-slate-50">
+</tr>
+
+
+      <!-- Empty row -->
+
+      @if (filteredApplications().length === 0) {
+  <tr>
+    <td colspan="6" class="text-center py-16">
+      <p class="text-slate-500">No applications found.</p>
+      <p class="text-sm text-slate-400 mt-2">
+        Try changing your search or filters.
+      </p>
+    </td>
+  </tr>
+}
+
+    </table>
+
+  </div>
+
+
+  <!-- Material Paginator -->
+
+  <mat-paginator
+  [pageSize]="6"
+  [pageSizeOptions]="[6, 10, 20]"
+  [showFirstLastButtons]="true"
+  aria-label="Job application pagination">
+</mat-paginator>
+
+</div>
+}
+
+ 
+
+</div>

@@ -1,0 +1,59 @@
+.action-btn {
+  width: 34px !important;
+  height: 34px !important;
+
+  min-width: 34px !important;
+  min-height: 34px !important;
+
+  padding: 0 !important;
+
+  border-radius: 8px !important;
+
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.2s ease;
+}
+
+.action-btn mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+
+/* View */
+
+.view-btn {
+  color: #2563eb !important;
+  background-color: #eff6ff !important;
+}
+
+.view-btn:hover {
+  background-color: #dbeafe !important;
+}
+
+
+/* Edit */
+
+.edit-btn {
+  color: #7c3aed !important;
+  background-color: #f5f3ff !important;
+}
+
+.edit-btn:hover {
+  background-color: #ede9fe !important;
+}
+
+
+/* Delete */
+
+.delete-btn {
+  color: #ef4444 !important;
+  background-color: #fef2f2 !important;
+}
+
+.delete-btn:hover {
+  background-color: #fee2e2 !important;
+}

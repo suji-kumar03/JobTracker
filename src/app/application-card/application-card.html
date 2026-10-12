@@ -1,0 +1,44 @@
+<div class="flex items-center gap-2">
+
+  <!-- View -->
+  <button
+    type="button"
+    (click)="view()"
+    mat-icon-button
+    matTooltip="View Application"
+    matTooltipPosition="above"
+    class="action-btn view-btn">
+
+    <mat-icon>visibility</mat-icon>
+
+  </button>
+
+
+  <!-- Edit -->
+  <button
+    type="button"
+    (click)="edit()"
+    mat-icon-button
+    matTooltip="Edit Application"
+    matTooltipPosition="above"
+    class="action-btn edit-btn">
+
+    <mat-icon>edit</mat-icon>
+
+  </button>
+
+
+  <!-- Delete -->
+  <button
+    type="button"
+    (click)="delete()"
+    mat-icon-button
+    matTooltip="Delete Application"
+    matTooltipPosition="above"
+    class="action-btn delete-btn">
+
+    <mat-icon>delete</mat-icon>
+
+  </button>
+
+</div>

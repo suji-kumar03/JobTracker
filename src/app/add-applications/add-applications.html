@@ -1,0 +1,423 @@
+<div class="w-full">
+
+  <!-- PAGE HEADING -->
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-slate-800">
+  {{ editId() ? 'Update Application' : 'Add New Application' }}
+</h1>
+
+    <p class="mt-1 text-sm text-slate-500">
+      Fill in the details about your job application
+    </p>
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- REACTIVE FORM START -->
+  <!-- ========================= -->
+
+  <form [formGroup]="jobForm" (ngSubmit)="saveApplication()">
+
+    <!-- FORM CARD -->
+    <div class="bg-white rounded-xl shadow-sm
+             border border-slate-200 p-6">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+
+        <!-- ========================= -->
+        <!-- JOB TITLE -->
+        <!-- ========================= -->
+
+        <div>
+
+  <mat-form-field
+    appearance="outline"
+    class="w-full">
+
+    <mat-label>Job Title</mat-label>
+
+    <input
+      matInput
+      type="text"
+      formControlName="jobTitle"
+      placeholder="e.g. Frontend Developer">
+
+    @if (
+      jobForm.get('jobTitle')?.hasError('required') &&
+      jobForm.get('jobTitle')?.touched
+    ) {
+      <mat-error>
+        Job title is required
+      </mat-error>
+    }
+
+    @if (
+      jobForm.get('jobTitle')?.hasError('minlength') &&
+      jobForm.get('jobTitle')?.touched
+    ) {
+      <mat-error>
+        Job title must be at least 3 characters
+      </mat-error>
+    }
+
+  </mat-form-field>
+
+</div>
+
+
+        <!-- ========================= -->
+        <!-- COMPANY -->
+        <!-- ========================= -->
+
+        <div>
+
+  <mat-form-field
+    appearance="outline"
+    class="w-full">
+
+    <mat-label>Company</mat-label>
+
+    <input
+      matInput
+      type="text"
+      formControlName="company"
+      placeholder="e.g. Google">
+
+    @if (
+      jobForm.get('company')?.hasError('required') &&
+      jobForm.get('company')?.touched
+    ) {
+      <mat-error>
+        Company is required
+      </mat-error>
+    }
+
+    @if (
+      jobForm.get('company')?.hasError('minlength') &&
+      jobForm.get('company')?.touched
+    ) {
+      <mat-error>
+        Company must be at least 2 characters
+      </mat-error>
+    }
+
+  </mat-form-field>
+
+</div>
+
+
+        <!-- ========================= -->
+        <!-- JOB TYPE -->
+        <!-- ========================= -->
+
+        <div>
+
+          <mat-form-field
+  appearance="outline"
+  class="w-full">
+
+  <mat-label>Job Type</mat-label>
+
+  <mat-select formControlName="jobType">
+
+    <mat-option value="Full Time">
+      Full Time
+    </mat-option>
+
+    <mat-option value="Part Time">
+      Part Time
+    </mat-option>
+
+    <mat-option value="Internship">
+      Internship
+    </mat-option>
+
+    <mat-option value="Contract">
+      Contract
+    </mat-option>
+
+  </mat-select>
+
+  @if (
+    jobForm.get('jobType')?.hasError('required') &&
+    jobForm.get('jobType')?.touched
+  ) {
+    <mat-error>
+      Job type is required
+    </mat-error>
+  }
+
+</mat-form-field>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- STATUS -->
+        <!-- ========================= -->
+
+        <div>
+
+          <mat-form-field
+  appearance="outline"
+  class="w-full">
+
+  <mat-label>Status</mat-label>
+
+  <mat-select formControlName="status">
+
+    <mat-option value="Applied">
+      Applied
+    </mat-option>
+
+    <mat-option value="Interview">
+      Interview
+    </mat-option>
+
+    <mat-option value="Selected">
+      Selected
+    </mat-option>
+
+    <mat-option value="Rejected">
+      Rejected
+    </mat-option>
+
+  </mat-select>
+
+</mat-form-field>
+
+        </div>
+
+
+
+
+        <div>
+
+          <mat-form-field
+  appearance="outline"
+  class="w-full">
+
+  <mat-label>Scheduled Date</mat-label>
+
+  <input
+    matInput
+    [matDatepicker]="picker"
+    formControlName="appliedDate"
+    [min]="today">
+
+  <mat-datepicker-toggle
+    matIconSuffix
+    [for]="picker">
+  </mat-datepicker-toggle>
+
+  <mat-datepicker #picker></mat-datepicker>
+
+  @if (
+    jobForm.get('appliedDate')?.hasError('required') &&
+    jobForm.get('appliedDate')?.touched
+  ) {
+    <mat-error>
+      Scheduled date is required
+    </mat-error>
+  }
+
+</mat-form-field>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- LOCATION -->
+        <!-- ========================= -->
+
+        <div>
+
+  <mat-form-field
+    appearance="outline"
+    class="w-full">
+
+    <mat-label>Location</mat-label>
+
+    <input
+      matInput
+      type="text"
+      formControlName="location"
+      placeholder="e.g. Bangalore">
+
+    @if (
+      jobForm.get('location')?.hasError('maxlength') &&
+      jobForm.get('location')?.touched
+    ) {
+      <mat-error>
+        Location must not exceed 50 characters
+      </mat-error>
+    }
+
+  </mat-form-field>
+
+</div>
+
+        <div class="flex items-center justify-between
+            border border-slate-200
+            rounded-lg
+            p-4">
+
+  <div>
+    <p class="text-sm font-medium text-slate-700">
+      Remote Job
+    </p>
+
+    <p class="text-xs text-slate-500 mt-1">
+      Is this job fully remote?
+    </p>
+  </div>
+
+  <label class="relative inline-flex items-center cursor-pointer">
+
+    <input
+      type="checkbox"
+      formControlName="isRemote"
+      class="sr-only peer"
+    />
+
+    <div
+      class="w-11 h-6
+             bg-slate-300
+             rounded-full
+             peer
+             peer-checked:bg-violet-600
+             after:content-['']
+             after:absolute
+             after:top-[2px]
+             after:left-[2px]
+             after:bg-white
+             after:rounded-full
+             after:h-5
+             after:w-5
+             after:transition-all
+             peer-checked:after:translate-x-full">
+    </div>
+
+  </label>
+
+</div>
+
+
+        <!-- ========================= -->
+        <!-- DESCRIPTION -->
+        <!-- ========================= -->
+
+        <div class="md:col-span-2">
+
+  <mat-form-field
+    appearance="outline"
+    class="w-full">
+
+    <mat-label>Description / Notes</mat-label>
+
+    <textarea
+      matInput
+      formControlName="description"
+      rows="5"
+      placeholder="Add notes about this application...">
+    </textarea>
+
+    @if (
+      jobForm.get('description')?.hasError('maxlength') &&
+      jobForm.get('description')?.touched
+    ) {
+      <mat-error>
+        Description must not exceed 150 characters
+      </mat-error>
+    }
+
+  </mat-form-field>
+
+</div>
+
+
+        <!-- ========================= -->
+        <!-- REQUIREMENTS -->
+        <!-- ========================= -->
+
+        <div class="md:col-span-2">
+
+  <mat-form-field
+    appearance="outline"
+    class="w-full">
+
+    <mat-label>Requirements</mat-label>
+
+    <textarea
+      matInput
+      formControlName="requirements"
+      rows="4"
+      placeholder="e.g. Angular, TypeScript, HTML, CSS...">
+    </textarea>
+
+    @if (
+      jobForm.get('requirements')?.hasError('maxlength') &&
+      jobForm.get('requirements')?.touched
+    ) {
+      <mat-error>
+        Requirements must not exceed 150 characters
+      </mat-error>
+    }
+
+  </mat-form-field>
+
+</div>
+
+      </div>
+
+
+      <!-- ========================= -->
+      <!-- BUTTONS -->
+      <!-- ========================= -->
+
+      <div class="flex flex-col sm:flex-row
+               justify-end
+               gap-3
+               mt-7
+               pt-5
+               border-t border-slate-200">
+
+        <!-- CANCEL -->
+        <button type="button" routerLink="/applications" class="px-6 py-3
+                 rounded-lg
+                 border border-slate-300
+                 text-slate-600
+                 font-medium
+                 hover:bg-slate-50
+                 transition">
+          Cancel
+        </button>
+
+
+        <!-- SAVE -->
+        <button
+  type="submit"
+  class="px-6 py-3
+         rounded-lg
+         bg-violet-600
+         text-white
+         font-semibold
+         hover:bg-violet-700
+         transition">
+
+  {{ editId() ? 'Update Application' : 'Save Application' }}
+
+</button>
+
+      </div>
+
+    </div>
+
+  </form>
+
+  <!-- ========================= -->
+  <!-- REACTIVE FORM END -->
+  <!-- ========================= -->
+
+</div>

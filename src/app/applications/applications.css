@@ -1,0 +1,15 @@
+.mat-mdc-table {
+  background-color: white !important;
+}
+
+.mat-mdc-row {
+  background-color: white !important;
+}
+
+.mat-mdc-header-row {
+  background-color: #f1f5f9 !important;
+}
+
+.mat-mdc-paginator {
+  background-color: white !important;
+}

@@ -1,0 +1,162 @@
+.signup-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8f9fc;
+  padding: 30px;
+}
+
+.signup-card {
+  width: 1100px;
+  min-height: 650px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+/* Left Side */
+
+.signup-left {
+  background: #f3efff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 50px;
+}
+
+.logo-box {
+  width: 85px;
+  height: 85px;
+  background: #7c20ff;
+  color: white;
+  border-radius: 18px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 40px;
+  font-weight: bold;
+
+  margin-bottom: 25px;
+}
+
+.signup-left h1 {
+  color: #6d18e8;
+  font-size: 38px;
+  margin-bottom: 8px;
+}
+
+.tagline {
+  font-size: 18px;
+  color: #4c5b73;
+  margin-bottom: 30px;
+}
+
+.description {
+  max-width: 430px;
+  line-height: 1.7;
+  color: #5f6b7a;
+}
+
+
+/* Right Side */
+
+.signup-right {
+  padding: 55px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.signup-right h2 {
+  color: #172b4d;
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #667085;
+  margin-bottom: 30px;
+}
+
+
+/* Form */
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 8px;
+  color: #172b4d;
+  font-weight: 600;
+}
+
+input {
+  height: 48px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  padding: 0 14px;
+  font-size: 15px;
+  margin-bottom: 18px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #7c20ff;
+}
+
+button {
+  height: 50px;
+  border: none;
+  border-radius: 8px;
+  background: #7c20ff;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+button:hover {
+  background: #6815dc;
+}
+
+.login-text {
+  text-align: center;
+  color: #667085;
+  margin-top: 25px;
+}
+
+.login-text a {
+  color: #7c20ff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+
+/* Responsive */
+
+@media (max-width: 800px) {
+
+  .signup-card {
+    grid-template-columns: 1fr;
+  }
+
+  .signup-left {
+    display: none;
+  }
+
+  .signup-right {
+    padding: 35px;
+  }
+}
