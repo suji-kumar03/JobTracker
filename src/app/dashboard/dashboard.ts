@@ -82,7 +82,7 @@ recentApplications = computed(() => {
 
   console.log('Dashboard initialized');
 
-  // Get user from localStorage
+  
   const savedUser = localStorage.getItem('user');
 
   if (savedUser) {

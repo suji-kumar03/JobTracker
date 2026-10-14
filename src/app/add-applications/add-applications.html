@@ -1,6 +1,6 @@
 <div class="w-full">
 
-  <!-- PAGE HEADING -->
+ 
   <div class="mb-6">
     <h1 class="text-2xl font-bold text-slate-800">
   {{ editId() ? 'Update Application' : 'Add New Application' }}
@@ -12,22 +12,17 @@
   </div>
 
 
-  <!-- ========================= -->
-  <!-- REACTIVE FORM START -->
-  <!-- ========================= -->
 
   <form [formGroup]="jobForm" (ngSubmit)="saveApplication()">
 
-    <!-- FORM CARD -->
+    
     <div class="bg-white rounded-xl shadow-sm
              border border-slate-200 p-6">
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
 
-        <!-- ========================= -->
-        <!-- JOB TITLE -->
-        <!-- ========================= -->
+        
 
         <div>
 
@@ -107,9 +102,7 @@
 </div>
 
 
-        <!-- ========================= -->
-        <!-- JOB TYPE -->
-        <!-- ========================= -->
+       
 
         <div>
 
@@ -153,9 +146,7 @@
         </div>
 
 
-        <!-- ========================= -->
-        <!-- STATUS -->
-        <!-- ========================= -->
+       
 
         <div>
 
@@ -227,9 +218,7 @@
         </div>
 
 
-        <!-- ========================= -->
-        <!-- LOCATION -->
-        <!-- ========================= -->
+    
 
         <div>
 
@@ -304,9 +293,7 @@
 </div>
 
 
-        <!-- ========================= -->
-        <!-- DESCRIPTION -->
-        <!-- ========================= -->
+       
 
         <div class="md:col-span-2">
 
@@ -337,9 +324,7 @@
 </div>
 
 
-        <!-- ========================= -->
-        <!-- REQUIREMENTS -->
-        <!-- ========================= -->
+      
 
         <div class="md:col-span-2">
 
@@ -372,9 +357,7 @@
       </div>
 
 
-      <!-- ========================= -->
-      <!-- BUTTONS -->
-      <!-- ========================= -->
+     
 
       <div class="flex flex-col sm:flex-row
                justify-end
@@ -383,7 +366,7 @@
                pt-5
                border-t border-slate-200">
 
-        <!-- CANCEL -->
+        
         <button type="button" routerLink="/applications" class="px-6 py-3
                  rounded-lg
                  border border-slate-300
@@ -395,7 +378,7 @@
         </button>
 
 
-        <!-- SAVE -->
+        
         <button
   type="submit"
   class="px-6 py-3
@@ -416,8 +399,5 @@
 
   </form>
 
-  <!-- ========================= -->
-  <!-- REACTIVE FORM END -->
-  <!-- ========================= -->
 
 </div>

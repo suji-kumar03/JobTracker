@@ -28,7 +28,7 @@ export class Signup {
 
   constructor(
     private router: Router
-  ) {}
+  ) { }
 
 
 
@@ -40,54 +40,54 @@ export class Signup {
   });
 
   showPassword = signal(false);
-showConfirmPassword = signal(false);
+  showConfirmPassword = signal(false);
 
 
- 
+
 
   signupForm = form(
-  this.signupData,
-  (schema) => {
+    this.signupData,
+    (schema) => {
 
-    required(schema.name);
+      required(schema.name);
 
-    required(schema.email);
-    email(schema.email);
+      required(schema.email);
+      email(schema.email);
 
-    required(schema.password);
-    minLength(schema.password, 8);
+      required(schema.password);
+      minLength(schema.password, 8);
 
-    pattern(
-      schema.password,
-      /[A-Z]/
-    );
+      pattern(
+        schema.password,
+        /[A-Z]/
+      );
 
-    pattern(
-      schema.password,
-      /[!@#$%^&*(),.?":{}|<>_\-]/
-    );
+      pattern(
+        schema.password,
+        /[!@#$%^&*(),.?":{}|<>_\-]/
+      );
 
-    required(schema.confirmPassword);
+      required(schema.confirmPassword);
 
-    validate(schema.confirmPassword, ({ value }) => {
+      validate(schema.confirmPassword, ({ value }) => {
 
-      if (
-        value() !== this.signupData().password
-      ) {
-        return {
-          kind: 'passwordMismatch',
-          message: 'Passwords do not match'
-        };
-      }
+        if (
+          value() !== this.signupData().password
+        ) {
+          return {
+            kind: 'passwordMismatch',
+            message: 'Passwords do not match'
+          };
+        }
 
-      return null;
-    });
+        return null;
+      });
 
-  }
-);
+    }
+  );
 
 
- 
+
 
   duplicateEmailError = signal('');
 
@@ -98,108 +98,108 @@ showConfirmPassword = signal(false);
   signup() {
 
 
-  this.duplicateEmailError.set('');
-
-
- 
-
-  if (this.signupForm().invalid()) {
-
-    this.signupForm.name().markAsTouched();
-
-    this.signupForm.email().markAsTouched();
-
-    this.signupForm.password().markAsTouched();
-
-    this.signupForm.confirmPassword().markAsTouched();
-
-    return;
-  }
-
-
-
-  const nameValue =
-    this.signupData().name.trim();
-
-  const emailValue =
-    this.signupData().email.trim();
-
-  const passwordValue =
-    this.signupData().password;
+    this.duplicateEmailError.set('');
 
 
 
 
-  const savedUsers =
-    localStorage.getItem('users');
+    if (this.signupForm().invalid()) {
+
+      this.signupForm.name().markAsTouched();
+
+      this.signupForm.email().markAsTouched();
+
+      this.signupForm.password().markAsTouched();
+
+      this.signupForm.confirmPassword().markAsTouched();
+
+      return;
+    }
 
 
-  const users = savedUsers
-    ? JSON.parse(savedUsers)
-    : [];
+
+    const nameValue =
+      this.signupData().name.trim();
+
+    const emailValue =
+      this.signupData().email.trim();
+
+    const passwordValue =
+      this.signupData().password;
 
 
 
 
-  const existingUser =
-    users.find(
-      (user: any) =>
-        user.email === emailValue
+    const savedUsers =
+      localStorage.getItem('users');
+
+
+    const users = savedUsers
+      ? JSON.parse(savedUsers)
+      : [];
+
+
+
+
+    const existingUser =
+      users.find(
+        (user: any) =>
+          user.email === emailValue
+      );
+
+
+    if (existingUser) {
+
+      this.duplicateEmailError.set(
+        'This email is already registered'
+      );
+
+      this.signupForm
+        .email()
+        .markAsTouched();
+
+      return;
+    }
+
+
+
+
+    const user = {
+
+      name: nameValue,
+
+      email: emailValue,
+
+      password: passwordValue
+
+    };
+
+
+
+
+    users.push(user);
+
+
+
+
+    localStorage.setItem(
+      'users',
+      JSON.stringify(users)
     );
 
 
-  if (existingUser) {
-
-    this.duplicateEmailError.set(
-      'This email is already registered'
+    console.log(
+      'Saved users:',
+      users
     );
 
-    this.signupForm
-      .email()
-      .markAsTouched();
 
-    return;
+
+
+    this.router.navigate([
+      '/login'
+    ]);
+
   }
-
-
- 
-
-  const user = {
-
-    name: nameValue,
-
-    email: emailValue,
-
-    password: passwordValue
-
-  };
-
-
-
-
-  users.push(user);
-
-
- 
-
-  localStorage.setItem(
-    'users',
-    JSON.stringify(users)
-  );
-
-
-  console.log(
-    'Saved users:',
-    users
-  );
-
-
-
-
-  this.router.navigate([
-    '/login'
-  ]);
-
-}
 
 }

@@ -71,23 +71,21 @@ onPageChange(event: PageEvent): void {
   this.pageSize = event.pageSize;
 }
 
-  // Filter values
-
-  // Values entered in the search panel
+  
   draftJobTitle = signal('');
   draftCompany = signal('');
   draftStatus = signal('All Status');
   draftType = signal('All Types');
 
-  // Values currently applied to the table
+  
   searchText = signal('');
   selectedStatus = signal('All Status');
   selectedType = signal('All Types');
-    // Applied text filters
+    
   appliedJobTitle = signal('');
   appliedCompany = signal('');
 
-  // Apply filters only when the Search button is clicked
+  
   applySearch() {
     this.searchText.set('');
 
@@ -97,13 +95,13 @@ onPageChange(event: PageEvent): void {
     this.selectedStatus.set(this.draftStatus());
     this.selectedType.set(this.draftType());
 
-    // Reset pagination to the first page
+   
     if (this.paginator) {
       this.paginator.firstPage();
     }
   }
 
-  // Clear all fields and show every application
+ 
   clearSearch() {
     this.draftJobTitle.set('');
     this.draftCompany.set('');
@@ -171,7 +169,7 @@ displayedColumns = [
 ];
 
 
-  // Filtered applications
+
   
   filteredApplications = computed(() => {
     const search = this.searchText().toLowerCase().trim();

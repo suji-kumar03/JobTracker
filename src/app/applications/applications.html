@@ -4,10 +4,6 @@
 
 
 
-  <!-- Main Content -->
-
-
-  <!-- Header -->
   <div class="flex justify-between items-center mb-6">
 
     <div>
@@ -28,107 +24,83 @@
 
 
 
- 
-  <mat-expansion-panel
-  class="mb-8 !bg-white !shadow-sm
-         [&_.mat-expansion-panel-content]:!bg-white
-         [&_.mat-expansion-panel-body]:!bg-white"
-  [expanded]="false">
 
-    <mat-expansion-panel-header
-  class="!h-14 !bg-slate-200 !px-5
+  <mat-expansion-panel class="mb-8 !bg-white !shadow-sm
+         [&_.mat-expansion-panel-content]:!bg-white
+         [&_.mat-expansion-panel-body]:!bg-white" [expanded]="false">
+
+    <mat-expansion-panel-header class="!h-14 !bg-slate-200 !px-5
          hover:!bg-slate-200
          [&_.mat-content]:!items-center">
 
-  <mat-panel-title
-    class="!m-0 !text-base !font-semibold !text-slate-700">
-    Application Search
-  </mat-panel-title>
+      <mat-panel-title class="!m-0 !text-base !font-semibold !text-slate-700">
+        Application Search
+      </mat-panel-title>
 
-</mat-expansion-panel-header>
+    </mat-expansion-panel-header>
 
-    
-<div class="w-full bg-white px-4 py-5">
 
-  <!-- Search fields and actions in one row -->
-  <div class="grid grid-cols-1 items-start gap-x-4 gap-y-1
+    <div class="w-full bg-white px-4 py-5">
+
+     
+      <div class="grid grid-cols-1 items-start gap-x-4 gap-y-1
               sm:grid-cols-2 xl:grid-cols-[1fr_1fr_0.85fr_0.85fr_auto]">
 
-    <!-- Job Title -->
-    <mat-form-field appearance="outline" class="w-full min-w-0">
-      <mat-label>Job Title</mat-label>
-      <input
-        matInput
-        [ngModel]="draftJobTitle()"
-        (ngModelChange)="draftJobTitle.set($event)"
-        placeholder="Enter job title">
-    </mat-form-field>
+       
+        <mat-form-field appearance="outline" class="w-full min-w-0">
+          <mat-label>Job Title</mat-label>
+          <input matInput [ngModel]="draftJobTitle()" (ngModelChange)="draftJobTitle.set($event)"
+            placeholder="Enter job title">
+        </mat-form-field>
 
-    <!-- Company -->
-    <mat-form-field appearance="outline" class="w-full min-w-0">
-      <mat-label>Company</mat-label>
-      <input
-        matInput
-        [ngModel]="draftCompany()"
-        (ngModelChange)="draftCompany.set($event)"
-        placeholder="Enter company name">
-    </mat-form-field>
+       
+        <mat-form-field appearance="outline" class="w-full min-w-0">
+          <mat-label>Company</mat-label>
+          <input matInput [ngModel]="draftCompany()" (ngModelChange)="draftCompany.set($event)"
+            placeholder="Enter company name">
+        </mat-form-field>
 
-    <!-- Status -->
-    <mat-form-field appearance="outline" class="w-full min-w-0">
-      <mat-label>Status</mat-label>
-      <mat-select
-        [ngModel]="draftStatus()"
-        (ngModelChange)="draftStatus.set($event)">
-        <mat-option value="All Status">All Status</mat-option>
-        <mat-option value="Applied">Applied</mat-option>
-        <mat-option value="Interview">Interview</mat-option>
-        <mat-option value="Selected">Selected</mat-option>
-        <mat-option value="Rejected">Rejected</mat-option>
-      </mat-select>
-    </mat-form-field>
+       
+        <mat-form-field appearance="outline" class="w-full min-w-0">
+          <mat-label>Status</mat-label>
+          <mat-select [ngModel]="draftStatus()" (ngModelChange)="draftStatus.set($event)">
+            <mat-option value="All Status">All Status</mat-option>
+            <mat-option value="Applied">Applied</mat-option>
+            <mat-option value="Interview">Interview</mat-option>
+            <mat-option value="Selected">Selected</mat-option>
+            <mat-option value="Rejected">Rejected</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-    <!-- Job Type -->
-    <mat-form-field appearance="outline" class="w-full min-w-0">
-      <mat-label>Job Type</mat-label>
-      <mat-select
-        [ngModel]="draftType()"
-        (ngModelChange)="draftType.set($event)">
-        <mat-option value="All Types">All Types</mat-option>
-        <mat-option value="Full Time">Full Time</mat-option>
-        <mat-option value="Part Time">Part Time</mat-option>
-        <mat-option value="Internship">Internship</mat-option>
-        <mat-option value="Contract">Contract</mat-option>
-      </mat-select>
-    </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="w-full min-w-0">
+          <mat-label>Job Type</mat-label>
+          <mat-select [ngModel]="draftType()" (ngModelChange)="draftType.set($event)">
+            <mat-option value="All Types">All Types</mat-option>
+            <mat-option value="Full Time">Full Time</mat-option>
+            <mat-option value="Part Time">Part Time</mat-option>
+            <mat-option value="Internship">Internship</mat-option>
+            <mat-option value="Contract">Contract</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-    <!-- Search and Clear -->
-    <div class="flex items-center justify-end gap-1 pt-1 xl:pl-1">
+       
+        <div class="flex items-center justify-end gap-1 pt-1 xl:pl-1">
 
-      <button
-        mat-icon-button
-        type="button"
-        matTooltip="Search Applications"
-        aria-label="Search applications"
-        class="!text-violet-600 hover:!bg-violet-50"
-        (click)="applySearch()">
-        <mat-icon>search</mat-icon>
-      </button>
+          <button mat-icon-button type="button" matTooltip="Search Applications" aria-label="Search applications"
+            class="!text-violet-600 hover:!bg-violet-50" (click)="applySearch()">
+            <mat-icon>search</mat-icon>
+          </button>
 
-      <button
-        mat-icon-button
-        type="button"
-        matTooltip="Clear Filters"
-        aria-label="Clear filters"
-        class="!text-slate-600 hover:!bg-slate-100"
-        (click)="clearSearch()">
-        <mat-icon>restart_alt</mat-icon>
-      </button>
+          <button mat-icon-button type="button" matTooltip="Clear Filters" aria-label="Clear filters"
+            class="!text-slate-600 hover:!bg-slate-100" (click)="clearSearch()">
+            <mat-icon>restart_alt</mat-icon>
+          </button>
 
+        </div>
+
+      </div>
     </div>
-
-  </div>
-</div>
 
   </mat-expansion-panel>
 
@@ -154,18 +126,14 @@
   </div>
 
   } @else {
-  <!-- Applications Table -->
+ 
   <div class="bg-white rounded-xl shadow-sm overflow-hidden mt-7">
 
-   <div class="h-[420px] w-full overflow-auto">
+    <div class="h-[420px] w-full overflow-auto">
 
-  <table
-    mat-table
-    [dataSource]="dataSource"
-    matSort
-    class="w-full min-w-[900px] table-fixed bg-white">
+      <table mat-table [dataSource]="dataSource" matSort class="w-full min-w-[900px] table-fixed bg-white">
 
-        <!-- Number -->
+       
 
         <ng-container matColumnDef="number">
 
@@ -183,11 +151,12 @@
         </ng-container>
 
 
-        <!-- Job Title -->
+        
 
         <ng-container matColumnDef="jobTitle">
 
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+            class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
 
             Job Title
 
@@ -202,11 +171,12 @@
         </ng-container>
 
 
-        <!-- Company -->
+        
 
         <ng-container matColumnDef="company">
 
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+            class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
 
             Company
 
@@ -221,11 +191,12 @@
         </ng-container>
 
 
-        <!-- Status -->
+   
 
         <ng-container matColumnDef="status">
 
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+            class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
 
             Status
 
@@ -248,11 +219,12 @@
         </ng-container>
 
 
-        <!-- Applied Date -->
+      
 
         <ng-container matColumnDef="appliedDate">
 
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+            class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
             Scheduled Date
           </th>
 
@@ -265,7 +237,7 @@
         </ng-container>
 
 
-        <!-- Actions -->
+       
 
         <ng-container matColumnDef="actions">
 
@@ -282,26 +254,20 @@
           </td>
 
         </ng-container>
-       
-        <!-- Header row -->
 
-        <tr
-  mat-header-row
-  *matHeaderRowDef="displayedColumns; sticky: true"
-  class="!bg-slate-200 text-slate-700">
-</tr>
+        
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="!bg-slate-200 text-slate-700">
+        </tr>
 
 
-        <!-- Data row -->
+        
 
-        <tr
-  mat-row
-  *matRowDef="let row; columns: displayedColumns"
-  class="!bg-white hover:!bg-slate-50">
-</tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" class="!bg-white hover:!bg-slate-50">
+        </tr>
 
 
-        <!-- Empty row -->
+        
 
         @if (filteredApplications().length === 0) {
         <tr>
@@ -319,20 +285,14 @@
     </div>
 
 
-    <!-- Material Paginator -->
+    
 
-    <mat-paginator
-  [pageIndex]="pageIndex"
-  [pageSize]="pageSize"
-  [pageSizeOptions]="[6, 10, 20]"
-  [showFirstLastButtons]="true"
-  (page)="onPageChange($event)"
-  aria-label="Job application pagination"
-  class="!bg-white !text-slate-700 border-t border-slate-200
+    <mat-paginator [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="[6, 10, 20]"
+      [showFirstLastButtons]="true" (page)="onPageChange($event)" aria-label="Job application pagination" class="!bg-white !text-slate-700 border-t border-slate-200
          [&_.mat-mdc-paginator-container]:!bg-white
          [&_.mat-mdc-select-value]:!text-slate-700
          [&_.mat-mdc-icon-button]:!text-slate-600">
-</mat-paginator>
+    </mat-paginator>
 
   </div>
   }

@@ -58,7 +58,7 @@ export class ApplicationDetails implements OnInit {
   }
 
 
-  // ================= EDIT =================
+
 
   editApplication() {
 
@@ -97,7 +97,7 @@ export class ApplicationDetails implements OnInit {
   }
 
 
-  // ================= DELETE =================
+
 
   deleteApplication() {
 

@@ -15,11 +15,11 @@
          justify-between
          shadow-md">
 
-  <!-- LEFT SIDE -->
+
 
   <div class="flex items-center gap-3">
 
-    <!-- MENU -->
+   
 
     <button mat-icon-button (click)="toggleSidebar()" matTooltip="Menu" matTooltipPosition="right" class="!text-white
              !w-11
@@ -38,7 +38,7 @@
     </button>
 
 
-    <!-- JOBTRACK LOGO -->
+  
 
     <div class="flex items-center gap-3">
 
@@ -72,7 +72,7 @@
   </div>
 
 
-  <!-- RIGHT SIDE -->
+ 
 
   <div class="flex
            items-center
@@ -82,7 +82,7 @@
 
 
 
-    <!-- SEARCH -->
+    
 
     <div class="flex items-center">
 
@@ -123,7 +123,7 @@
     </div>
 
 
-    <!-- NOTIFICATIONS -->
+    
 
     <button mat-icon-button matTooltip="Notifications" matTooltipPosition="below" class="!text-white
              hover:!bg-slate-800">
@@ -134,7 +134,7 @@
 
     </button>
 
-    <!-- PROFILE -->
+  
 
     <button type="button" [matMenuTriggerFor]="profileMenu" matTooltip="{{ userName() }}" matTooltipPosition="below"
       class="w-10
@@ -176,7 +176,7 @@
 
 
 
-<!-- ================= MAIN LAYOUT ================= -->
+
 
 <div class="fixed
          top-20
@@ -188,7 +188,6 @@
          overflow-hidden">
 
 
-  <!-- ================= SIDEBAR ================= -->
 
   <aside class="h-full
            bg-slate-900
@@ -200,12 +199,12 @@
            overflow-hidden" [class.w-[72px]]="!sidebarExpanded()" [class.w-60]="sidebarExpanded()">
 
 
-    <!-- ================= NAVIGATION ================= -->
+
 
     <nav class="p-3 space-y-2">
 
 
-      <!-- ================= DASHBOARD ================= -->
+      
 
       <a routerLink="/dashboard" (click)="collapseSidebar()" matTooltip="Dashboard" matTooltipPosition="right" class="flex
          items-center
@@ -231,7 +230,7 @@
 
 
 
-      <!-- ================= APPLICATIONS ================= -->
+
 
       <a routerLink="/applications" (click)="collapseSidebar()" matTooltip="Applications" matTooltipPosition="right"
         class="flex
@@ -258,7 +257,7 @@
 
 
 
-      <!-- ================= ADD APPLICATION ================= -->
+
 
       <a routerLink="/add-applications" (click)="collapseSidebar()" matTooltip="Add Application"
         matTooltipPosition="right" class="flex
@@ -285,7 +284,7 @@
 
 
 
-      <!-- ================= SETTINGS ================= -->
+
 
       <a routerLink="/settings" (click)="collapseSidebar()" matTooltip="Settings" matTooltipPosition="right" class="flex
          items-center
@@ -315,7 +314,7 @@
 
 
 
-  <!-- ================= PAGE CONTENT ================= -->
+
 
   <main class="flex-1
            min-w-0

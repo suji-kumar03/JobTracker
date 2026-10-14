@@ -28,10 +28,10 @@ import { Job } from '../services/job';
 })
 export class Layout implements OnInit {
 
-  // Sidebar state
+
   sidebarExpanded = signal(false);
 
-  // Logged-in user's name
+  
   userName = signal('');
   globalSearch = signal('');
   searchOpen = signal(false);
@@ -61,7 +61,7 @@ export class Layout implements OnInit {
     }
   }
 
-  // Expand / collapse sidebar
+ 
   toggleSidebar() {
     this.sidebarExpanded.update(
       expanded => !expanded

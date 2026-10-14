@@ -99,7 +99,6 @@ export class AddApplications implements OnInit {
             isRemote: application.isRemote
           });
 
-          // Save the original values after loading the application
           this.originalFormValue = this.getFormSnapshot();
         },
         error: (error) => {
@@ -113,7 +112,6 @@ export class AddApplications implements OnInit {
     this.loadDefaultJobType();
   }
 
-  // Convert the form values into a consistent comparison snapshot
   private getFormSnapshot(): string {
     const value = this.jobForm.getRawValue();
     const date = value.appliedDate;
@@ -156,7 +154,7 @@ export class AddApplications implements OnInit {
       return;
     }
 
-    // EDIT: check whether any values have changed
+
     if (this.editId()) {
       if (
         this.originalFormValue !== null &&
@@ -191,7 +189,7 @@ export class AddApplications implements OnInit {
       isRemote: formValue.isRemote ?? false
     };
 
-    // EDIT: ask for confirmation only when values changed
+
     if (this.editId()) {
       const dialogRef = this.dialog.open(ConfirmDialog, {
         width: '380px',
@@ -237,7 +235,7 @@ export class AddApplications implements OnInit {
       return;
     }
 
-    // ADD: keep the existing add behavior
+  
     this.jobService.addApplication(application).subscribe({
       next: () => {
         this.jobService.loadApplications().subscribe({

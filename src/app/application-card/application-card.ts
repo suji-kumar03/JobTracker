@@ -13,10 +13,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 export class ApplicationCard {
 
-  // Parent → Child
+
   application = input.required<JobApplication>();
 
-  // Child → Parent
+  
   deleteApplication = output<string>();
 
   editApplication = output<JobApplication>();
