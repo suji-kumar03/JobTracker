@@ -14,29 +14,16 @@
       "id": "Y4lfZdYCmgg"
     },
     {
-      "jobTitle": "Engineer",
-      "company": "Google",
-      "jobType": "Internship",
-      "status": "Applied",
-      "appliedDate": "2026-10-15",
-      "location": "",
-      "description": "",
-      "requirements": "",
-      "isRemote": true,
-      "id": "ArXQXufk9VU",
-      "userEmail": "siva@gmail.com"
-    },
-    {
-      "id": "j5d_1SBK_EU",
       "jobTitle": "cloud",
       "company": "Microsoft",
       "jobType": "Part Time",
-      "status": "Selected",
-      "appliedDate": "2026-10-08",
+      "status": "Rejected",
+      "appliedDate": "2026-10-11",
       "location": "",
       "description": "",
       "requirements": "",
       "isRemote": false,
+      "id": "j5d_1SBK_EU",
       "userEmail": "siva@gmail.com"
     },
     {
@@ -194,6 +181,19 @@
       "isRemote": true,
       "userEmail": "siva@gmail.com",
       "id": "y9vS4w9OMbs"
+    },
+    {
+      "jobTitle": "Support",
+      "company": "Microsoft",
+      "jobType": "Part Time",
+      "status": "Interview",
+      "appliedDate": "2026-10-22",
+      "location": "",
+      "description": "",
+      "requirements": "",
+      "isRemote": false,
+      "id": "lIKR5fLy9H0",
+      "userEmail": "siva@gmail.com"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

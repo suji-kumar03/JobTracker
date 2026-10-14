@@ -1,171 +1,139 @@
 <div class="w-full">
 
 
- 
+
 
 
   <!-- Main Content -->
-  
 
-    <!-- Header -->
-    <div class="flex justify-between items-center mb-6">
 
-      <div>
-        <h2 class="text-2xl font-bold text-slate-800">
-          My Applications
-        </h2>
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-6">
 
-        <p class="text-sm text-slate-500">
-          Manage your job applications
-        </p>
-      </div>
+    <div>
+      <h2 class="text-2xl font-bold text-slate-800">
+        My Applications
+      </h2>
 
-      
-
+      <p class="text-sm text-slate-500">
+        Manage your job applications
+      </p>
     </div>
 
 
 
-<!-- Search + Filters -->
-<div class="bg-white rounded-xl shadow-sm p-5 mb-6">
-
-  <div class="grid md:grid-cols-3 gap-4">
-
-    <!-- Status -->
-    <mat-form-field appearance="outline" class="w-full">
-
-      <mat-label>Status</mat-label>
-
-      <mat-select
-        [ngModel]="selectedStatus()"
-        (ngModelChange)="selectedStatus.set($event)">
-
-        <mat-option value="All Status">
-          All Status
-        </mat-option>
-
-        <mat-option value="Applied">
-          Applied
-        </mat-option>
-
-        <mat-option value="Interview">
-          Interview
-        </mat-option>
-
-        <mat-option value="Selected">
-          Selected
-        </mat-option>
-
-        <mat-option value="Rejected">
-          Rejected
-        </mat-option>
-
-      </mat-select>
-
-    </mat-form-field>
+  </div>
 
 
-    <!-- Job Type -->
-    <mat-form-field appearance="outline" class="w-full">
-
-      <mat-label>Job Type</mat-label>
-
-      <mat-select
-        [ngModel]="selectedType()"
-        (ngModelChange)="selectedType.set($event)">
-
-        <mat-option value="All Types">
-          All Types
-        </mat-option>
-
-        <mat-option value="Full Time">
-          Full Time
-        </mat-option>
-
-        <mat-option value="Part Time">
-          Part Time
-        </mat-option>
-
-        <mat-option value="Internship">
-          Internship
-        </mat-option>
-
-        <mat-option value="Contract">
-          Contract
-        </mat-option>
-
-      </mat-select>
-
-    </mat-form-field>
 
 
-    <!-- Search -->
+
  
-<div class="w-full">
+  <mat-expansion-panel
+  class="mb-8 !bg-white !shadow-sm
+         [&_.mat-expansion-panel-content]:!bg-white
+         [&_.mat-expansion-panel-body]:!bg-white"
+  [expanded]="false">
 
-  @if (searchOpen()) {
+    <mat-expansion-panel-header
+  class="!h-14 !bg-slate-200 !px-5
+         hover:!bg-slate-200
+         [&_.mat-content]:!items-center">
 
-    <mat-form-field
-      appearance="outline"
-      class="w-full"
-      matTooltip="Search Applications"
-    matTooltipPosition="above">
+  <mat-panel-title
+    class="!m-0 !text-base !font-semibold !text-slate-700">
+    Application Search
+  </mat-panel-title>
 
-      <mat-label>Search Applications</mat-label>
+</mat-expansion-panel-header>
 
+    
+<div class="w-full bg-white px-4 py-5">
+
+  <!-- Search fields and actions in one row -->
+  <div class="grid grid-cols-1 items-start gap-x-4 gap-y-1
+              sm:grid-cols-2 xl:grid-cols-[1fr_1fr_0.85fr_0.85fr_auto]">
+
+    <!-- Job Title -->
+    <mat-form-field appearance="outline" class="w-full min-w-0">
+      <mat-label>Job Title</mat-label>
       <input
         matInput
-        type="text"
-        [ngModel]="searchText()"
-        (ngModelChange)="searchSubject.next($event)"
-        placeholder="Search by job title or company">
-
-      <!-- Icons at the END -->
-      <button
-        mat-icon-button
-        matSuffix
-        type="button"
-        matTooltip="Close Search"
-        matTooltipPosition="above"
-        (click)="toggleSearch()">
-
-        <mat-icon>
-          close
-        </mat-icon>
-
-      </button>
-
+        [ngModel]="draftJobTitle()"
+        (ngModelChange)="draftJobTitle.set($event)"
+        placeholder="Enter job title">
     </mat-form-field>
 
-  } @else {
+    <!-- Company -->
+    <mat-form-field appearance="outline" class="w-full min-w-0">
+      <mat-label>Company</mat-label>
+      <input
+        matInput
+        [ngModel]="draftCompany()"
+        (ngModelChange)="draftCompany.set($event)"
+        placeholder="Enter company name">
+    </mat-form-field>
 
-    <!-- Search icon before opening -->
-    <div class="h-14 w-full flex items-center justify-end">
+    <!-- Status -->
+    <mat-form-field appearance="outline" class="w-full min-w-0">
+      <mat-label>Status</mat-label>
+      <mat-select
+        [ngModel]="draftStatus()"
+        (ngModelChange)="draftStatus.set($event)">
+        <mat-option value="All Status">All Status</mat-option>
+        <mat-option value="Applied">Applied</mat-option>
+        <mat-option value="Interview">Interview</mat-option>
+        <mat-option value="Selected">Selected</mat-option>
+        <mat-option value="Rejected">Rejected</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Job Type -->
+    <mat-form-field appearance="outline" class="w-full min-w-0">
+      <mat-label>Job Type</mat-label>
+      <mat-select
+        [ngModel]="draftType()"
+        (ngModelChange)="draftType.set($event)">
+        <mat-option value="All Types">All Types</mat-option>
+        <mat-option value="Full Time">Full Time</mat-option>
+        <mat-option value="Part Time">Part Time</mat-option>
+        <mat-option value="Internship">Internship</mat-option>
+        <mat-option value="Contract">Contract</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Search and Clear -->
+    <div class="flex items-center justify-end gap-1 pt-1 xl:pl-1">
 
       <button
         mat-icon-button
         type="button"
         matTooltip="Search Applications"
-        matTooltipPosition="above"
-        (click)="toggleSearch()">
+        aria-label="Search applications"
+        class="!text-violet-600 hover:!bg-violet-50"
+        (click)="applySearch()">
+        <mat-icon>search</mat-icon>
+      </button>
 
-        <mat-icon>
-          search
-        </mat-icon>
-
+      <button
+        mat-icon-button
+        type="button"
+        matTooltip="Clear Filters"
+        aria-label="Clear filters"
+        class="!text-slate-600 hover:!bg-slate-100"
+        (click)="clearSearch()">
+        <mat-icon>restart_alt</mat-icon>
       </button>
 
     </div>
 
-  }
-
-</div>
-
   </div>
-
 </div>
 
-@if (jobService.isLoading()) {
+  </mat-expansion-panel>
+
+
+  @if (jobService.isLoading()) {
 
   <div class="bg-white rounded-xl shadow-sm py-16 text-center">
 
@@ -175,7 +143,7 @@
 
   </div>
 
-} @else if (jobService.apiError()) {
+  } @else if (jobService.apiError()) {
 
   <div class="bg-white rounded-xl shadow-sm py-16 text-center">
 
@@ -185,215 +153,190 @@
 
   </div>
 
-} @else {
-    <!-- Applications Table -->
-    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+  } @else {
+  <!-- Applications Table -->
+  <div class="bg-white rounded-xl shadow-sm overflow-hidden mt-7">
 
-  <div class="overflow-x-auto">
+   <div class="h-[420px] w-full overflow-auto">
 
-    <table
-  mat-table
-  [dataSource]="dataSource"
-  matSort
-  class="w-full table-fixed bg-white">
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    matSort
+    class="w-full min-w-[900px] table-fixed bg-white">
 
-      <!-- Number -->
+        <!-- Number -->
 
-      <ng-container matColumnDef="number">
+        <ng-container matColumnDef="number">
 
-        <th mat-header-cell *matHeaderCellDef class="w-16">
-          S.No
-        </th>
+          <th mat-header-cell *matHeaderCellDef class="w-16">
+            S.No
+          </th>
 
-        <td mat-cell *matCellDef="let app; let i = index"  class="w-16">
+          <td mat-cell *matCellDef="let app; let i = index" class="w-16 !bg-white !text-slate-700">
 
-  {{ (paginator?.pageIndex ?? 0) * (paginator?.pageSize ?? 6) + i + 1 }}
-    
+            {{ (paginator?.pageIndex ?? 0) * (paginator?.pageSize ?? 6) + i + 1 }}
 
-</td>
 
-      </ng-container>
+          </td>
 
+        </ng-container>
 
-      <!-- Job Title -->
 
-      <ng-container matColumnDef="jobTitle">
+        <!-- Job Title -->
 
-        <th
-  mat-header-cell
-  *matHeaderCellDef
-  mat-sort-header class="w-1/4">
+        <ng-container matColumnDef="jobTitle">
 
-  Job Title
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
 
-</th>
+            Job Title
 
-        <td
-          mat-cell
-          *matCellDef="let app"
-          class="font-medium w-1/4">
+          </th>
 
-          {{ app.jobTitle }}
+          <td mat-cell *matCellDef="let app" class="font-medium w-1/4 !bg-white !text-slate-700">
 
-        </td>
+            {{ app.jobTitle }}
 
-      </ng-container>
+          </td>
 
+        </ng-container>
 
-      <!-- Company -->
 
-      <ng-container matColumnDef="company">
+        <!-- Company -->
 
-        <th
-  mat-header-cell
-  *matHeaderCellDef
-  mat-sort-header class="w-1/4">
+        <ng-container matColumnDef="company">
 
-  Company
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
 
-</th>
+            Company
 
-        <td mat-cell *matCellDef="let app" class="w-1/4">
+          </th>
 
-          {{ app.company }}
+          <td mat-cell *matCellDef="let app" class="w-1/4 !bg-white !text-slate-700">
 
-        </td>
+            {{ app.company }}
 
-      </ng-container>
+          </td>
 
+        </ng-container>
 
-      <!-- Status -->
 
-      <ng-container matColumnDef="status">
+        <!-- Status -->
 
-        <th
-  mat-header-cell
-  *matHeaderCellDef
-  mat-sort-header class="w-1/4">
+        <ng-container matColumnDef="status">
 
-  Status
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
 
-</th>
+            Status
 
-        <td mat-cell *matCellDef="let app" class="w-1/4">
+          </th>
 
-          <span
-            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+          <td mat-cell *matCellDef="let app" class="w-1/4 !bg-white !text-slate-700">
 
-            [class.bg-blue-100]="app.status === 'Applied'"
-            [class.text-blue-700]="app.status === 'Applied'"
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+              [class.bg-blue-100]="app.status === 'Applied'" [class.text-blue-700]="app.status === 'Applied'"
+              [class.bg-yellow-100]="app.status === 'Interview'" [class.text-yellow-700]="app.status === 'Interview'"
+              [class.bg-green-100]="app.status === 'Selected'" [class.text-green-700]="app.status === 'Selected'"
+              [class.bg-red-100]="app.status === 'Rejected'" [class.text-red-700]="app.status === 'Rejected'">
 
-            [class.bg-yellow-100]="app.status === 'Interview'"
-            [class.text-yellow-700]="app.status === 'Interview'"
+              {{ app.status }}
 
-            [class.bg-green-100]="app.status === 'Selected'"
-            [class.text-green-700]="app.status === 'Selected'"
+            </span>
 
-            [class.bg-red-100]="app.status === 'Rejected'"
-            [class.text-red-700]="app.status === 'Rejected'">
+          </td>
 
-            {{ app.status }}
+        </ng-container>
 
-          </span>
 
-        </td>
+        <!-- Applied Date -->
 
-      </ng-container>
+        <ng-container matColumnDef="appliedDate">
 
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
+            Scheduled Date
+          </th>
 
-      <!-- Applied Date -->
+          <td mat-cell *matCellDef="let app" class="w-1/4 !bg-white !text-slate-700">
 
-      <ng-container matColumnDef="appliedDate">
+            {{ app.appliedDate }}
 
-        <th
-  mat-header-cell
-  *matHeaderCellDef
-  mat-sort-header class="w-1/4">
-  Scheduled Date
-</th>
+          </td>
 
-        <td mat-cell *matCellDef="let app" class="w-1/4">
+        </ng-container>
 
-          {{ app.appliedDate }}
 
-        </td>
+        <!-- Actions -->
 
-      </ng-container>
+        <ng-container matColumnDef="actions">
 
+          <th mat-header-cell *matHeaderCellDef class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
+            Actions
+          </th>
 
-      <!-- Actions -->
+          <td mat-cell *matCellDef="let app" class="w-1/4 !bg-white !text-slate-700">
 
-      <ng-container matColumnDef="actions">
+            <app-application-card [application]="app" (viewApplication)="viewApplication($event)"
+              (deleteApplication)="deleteApplication($event)" (editApplication)="editApplication($event)">
+            </app-application-card>
 
-        <th mat-header-cell *matHeaderCellDef class="w-1/4">
-          Actions
-        </th>
+          </td>
 
-        <td mat-cell *matCellDef="let app" class="w-1/4">
+        </ng-container>
+       
+        <!-- Header row -->
 
-          <app-application-card
-            [application]="app"
-
-            (viewApplication)="viewApplication($event)"
-
-            (deleteApplication)="deleteApplication($event)"
-
-            (editApplication)="editApplication($event)">
-          </app-application-card>
-
-        </td>
-
-      </ng-container>
-
-
-      <!-- Header row -->
-
-      <tr
+        <tr
   mat-header-row
-  *matHeaderRowDef="displayedColumns"
-  class="bg-slate-100">
+  *matHeaderRowDef="displayedColumns; sticky: true"
+  class="!bg-slate-200 text-slate-700">
 </tr>
 
 
-      <!-- Data row -->
+        <!-- Data row -->
 
-      <tr
+        <tr
   mat-row
   *matRowDef="let row; columns: displayedColumns"
-  class="bg-white hover:bg-slate-50">
+  class="!bg-white hover:!bg-slate-50">
 </tr>
 
 
-      <!-- Empty row -->
+        <!-- Empty row -->
 
-      @if (filteredApplications().length === 0) {
-  <tr>
-    <td colspan="6" class="text-center py-16">
-      <p class="text-slate-500">No applications found.</p>
-      <p class="text-sm text-slate-400 mt-2">
-        Try changing your search or filters.
-      </p>
-    </td>
-  </tr>
-}
+        @if (filteredApplications().length === 0) {
+        <tr>
+          <td colspan="6" class="text-center py-16">
+            <p class="text-slate-500">No applications found.</p>
+            <p class="text-sm text-slate-400 mt-2">
+              Try changing your search or filters.
+            </p>
+          </td>
+        </tr>
+        }
 
-    </table>
+      </table>
 
-  </div>
+    </div>
 
 
-  <!-- Material Paginator -->
+    <!-- Material Paginator -->
 
-  <mat-paginator
-  [pageSize]="6"
+    <mat-paginator
+  [pageIndex]="pageIndex"
+  [pageSize]="pageSize"
   [pageSizeOptions]="[6, 10, 20]"
   [showFirstLastButtons]="true"
-  aria-label="Job application pagination">
+  (page)="onPageChange($event)"
+  aria-label="Job application pagination"
+  class="!bg-white !text-slate-700 border-t border-slate-200
+         [&_.mat-mdc-paginator-container]:!bg-white
+         [&_.mat-mdc-select-value]:!text-slate-700
+         [&_.mat-mdc-icon-button]:!text-slate-600">
 </mat-paginator>
 
-</div>
-}
+  </div>
+  }
 
- 
+
 
 </div>
