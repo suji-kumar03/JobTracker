@@ -19,7 +19,7 @@
 }
 
 
-/* Left Side */
+
 
 .signup-left {
   background: #f3efff;
@@ -67,7 +67,6 @@
 }
 
 
-/* Right Side */
 
 .signup-right {
   padding: 55px;
@@ -88,7 +87,7 @@
 }
 
 
-/* Form */
+
 
 form {
   display: flex;
@@ -144,7 +143,7 @@ button:hover {
 }
 
 
-/* Responsive */
+
 
 @media (max-width: 800px) {
 

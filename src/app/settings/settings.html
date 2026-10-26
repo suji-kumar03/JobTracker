@@ -13,108 +13,86 @@
   </div>
 
 
- 
- 
-<div 
-  class="bg-white rounded-xl 
-         border border-slate-200 
+
+
+  <div class="bg-white rounded-xl border border-slate-200
          shadow-sm p-5 mb-5">
 
-  <div 
-    class="flex flex-col sm:flex-row 
-           items-start sm:items-center 
+    <div class="flex flex-col sm:flex-row
+           items-start sm:items-center
            justify-between gap-4">
 
-    
-    <div class="flex items-center gap-4">
 
-      <div 
-        class="w-12 h-12 rounded-full 
-               bg-violet-600 text-white 
-               flex items-center justify-center 
-               font-semibold text-lg">
+      <div class="flex items-center gap-4">
 
-        {{ userName().charAt(0).toUpperCase() }}
 
-      </div>
+        <div class="w-14 h-14 shrink-0 rounded-full
+               bg-violet-600 text-white
+               flex items-center justify-center
+               font-bold text-xl">
 
-      <div>
+          {{ userName().charAt(0).toUpperCase() }}
 
-        @if (editMode()) {
+        </div>
 
-  <div class="flex items-center gap-2">
 
-    <input
-      type="text"
-      [(ngModel)]="profileName"
-      class="border border-slate-300
-             rounded-lg
-             px-3 py-2
-             text-sm
-             outline-none
-             focus:ring-2
-             focus:ring-violet-500">
+        <div class="min-w-0">
 
-    <button
-      type="button"
-      (click)="saveProfile()"
-      class="px-3 py-2
-             bg-violet-600
-             text-white
-             rounded-lg
-             text-sm
-             hover:bg-violet-700">
+          @if (editMode()) {
 
-      Save
+          <div class="flex flex-wrap items-center gap-2">
 
-    </button>
+            <input type="text" [(ngModel)]="profileName" class="w-full sm:w-auto
+                     border border-slate-300 rounded-lg
+                     px-3 py-2 text-sm outline-none
+                     focus:ring-2 focus:ring-violet-500">
 
-  </div>
+            <button type="button" (click)="saveProfile()" class="px-4 py-2 bg-violet-600
+                     text-white rounded-lg text-sm
+                     hover:bg-violet-700 transition">
+              Save
+            </button>
 
-  <p class="text-sm text-slate-500 mt-1">
-    {{ userEmail() }}
-  </p>
+          </div>
 
-} @else {
+          <p class="text-sm text-slate-500 mt-1">
+            {{ userEmail() }}
+          </p>
 
-  <h2 class="font-semibold text-slate-800">
-    {{ userName() }}
-  </h2>
+          } @else {
 
-  <p class="text-sm text-slate-500">
-    {{ userEmail() }}
-  </p>
+          <h2 class="font-semibold text-lg text-slate-800">
+            {{ userName() }}
+          </h2>
 
-}
+          <p class="text-sm text-slate-500 mt-1">
+            {{ userEmail() }}
+          </p>
+
+          }
+
+        </div>
 
       </div>
+
+
+      @if (!editMode()) {
+      <button type="button" (click)="editProfile()" class="px-4 py-2 text-sm font-medium
+               text-violet-600 border border-violet-200
+               rounded-lg hover:bg-violet-50
+               transition">
+        Edit Profile
+      </button>
+      }
 
     </div>
 
-    
-   <button
-  type="button"
-  (click)="editProfile()"
-  class="px-4 py-2
-         text-sm font-medium
-         text-violet-600
-         border border-violet-200
-         rounded-lg
-         hover:bg-violet-50
-         transition">
-
-  Edit Profile
-
-</button>
-
   </div>
 
-</div>
 
 
- 
-  <div
-    class="bg-white rounded-xl
+
+  <div class="bg-white rounded-xl
            border border-slate-200
            shadow-sm p-5 mb-5">
 
@@ -123,9 +101,8 @@
     </h2>
 
 
-  
-    <div
-      class="flex items-center
+
+    <div class="flex items-center
              justify-between
              py-4
              border-b border-slate-100">
@@ -142,38 +119,18 @@
 
       </div>
 
-      
-      <button
-  type="button"
-  (click)="toggleEmailNotifications()"
-  class="w-11 h-6 rounded-full
-         relative transition-colors"
-  [class.bg-violet-600]="emailNotifications()"
-  [class.bg-slate-200]="!emailNotifications()">
 
-  <div
-    class="absolute top-1
-           w-4 h-4
-           bg-white rounded-full
-           shadow-sm transition-all"
-    [class.right-1]="emailNotifications()"
-    [class.left-1]="!emailNotifications()">
-  </div>
-
-</button>
+      <mat-slide-toggle [checked]="emailNotifications()" (change)="emailNotifications.set($event.checked)">
+      </mat-slide-toggle>
 
     </div>
 
 
-    
-    <div
-      class="flex items-center
-             justify-between
-             py-4
-             border-b border-slate-100">
+
+    <div class="flex items-center justify-between
+         py-4 border-b border-slate-100">
 
       <div>
-
         <p class="font-medium text-slate-700">
           Dark Mode
         </p>
@@ -181,35 +138,17 @@
         <p class="text-sm text-slate-500 mt-1">
           Switch between light and dark theme
         </p>
-
       </div>
 
-     
-<button
-  type="button"
-  (click)="toggleDarkMode()"
-  class="w-11 h-6 rounded-full
-         relative transition-colors"
-  [class.bg-violet-600]="darkMode()"
-  [class.bg-slate-200]="!darkMode()">
-
-  <div
-    class="absolute top-1
-           w-4 h-4
-           bg-white rounded-full
-           shadow-sm transition-all"
-    [class.right-1]="darkMode()"
-    [class.left-1]="!darkMode()">
-  </div>
-
-</button>
+      <mat-slide-toggle [checked]="darkMode()" (change)="toggleDarkMode($event.checked)">
+      </mat-slide-toggle>
 
     </div>
 
 
-    
-    <div
-      class="flex flex-col sm:flex-row
+
+
+    <div class="flex flex-col sm:flex-row
              sm:items-center
              justify-between
              gap-3
@@ -223,10 +162,7 @@
 
       </div>
 
-     <select
-  [(ngModel)]="defaultJobType"
-  (change)="saveJobType()"
-  class="w-full sm:w-44
+      <select [(ngModel)]="defaultJobType" (change)="saveJobType()" class="w-full sm:w-44
          px-3 py-2
          border border-slate-300
          rounded-lg
@@ -237,21 +173,20 @@
          focus:ring-2
          focus:ring-violet-500">
 
-  <option value="Full Time">Full Time</option>
-  <option value="Part Time">Part Time</option>
-  <option value="Internship">Internship</option>
-  <option value="Contract">Contract</option>
+        <option value="Full Time">Full Time</option>
+        <option value="Part Time">Part Time</option>
+        <option value="Internship">Internship</option>
+        <option value="Contract">Contract</option>
 
-</select>
+      </select>
 
     </div>
 
   </div>
 
 
-  
-  <div
-    class="bg-white rounded-xl
+
+  <div class="bg-white rounded-xl
            border border-slate-200
            shadow-sm p-5">
 
@@ -260,9 +195,8 @@
     </h2>
 
 
-   
-    <div
-      class="flex flex-col sm:flex-row
+
+    <div class="flex flex-col sm:flex-row
              sm:items-center
              justify-between
              gap-4
@@ -281,10 +215,7 @@
 
       </div>
 
-      <button
-  type="button"
-  (click)="exportData()"
-  class="px-5 py-2
+      <button type="button" (click)="exportData()" class="px-5 py-2
          text-sm font-medium
          text-violet-600
          border border-violet-200
@@ -292,16 +223,15 @@
          hover:bg-violet-50
          transition">
 
-  Export
+        Export
 
-</button>
+      </button>
 
     </div>
 
 
-    
-    <div
-      class="flex flex-col sm:flex-row
+
+    <div class="flex flex-col sm:flex-row
              sm:items-center
              justify-between
              gap-4
@@ -319,10 +249,7 @@
 
       </div>
 
-      <button
-  type="button"
-  (click)="clearData()"
-  class="px-5 py-2
+      <button type="button" (click)="clearData()" class="px-5 py-2
          text-sm font-medium
          text-red-500
          border border-red-200
@@ -330,9 +257,9 @@
          hover:bg-red-50
          transition">
 
-  Clear
+        Clear
 
-</button>
+      </button>
 
     </div>
 

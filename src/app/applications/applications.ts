@@ -31,11 +31,27 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
+import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-applications',
   standalone: true,
-  imports: [ApplicationCard, FormsModule, MatDialogModule, MatTableModule,
-    MatPaginatorModule, MatSortModule,MatIconModule, MatFormFieldModule, MatSelectModule, MatInputModule,MatTooltipModule, MatExpansionModule, MatButtonModule],
+  imports: [
+  ApplicationCard,
+  FormsModule,
+  DatePipe,
+  MatDialogModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule,
+  MatIconModule,
+  MatFormFieldModule,
+  MatSelectModule,
+  MatInputModule,
+  MatTooltipModule,
+  MatExpansionModule,
+  MatButtonModule
+],
   templateUrl: './applications.html',
   styleUrl: './applications.css',
 })
@@ -45,8 +61,20 @@ export class Applications implements OnInit {
   router = inject(Router);
   dialog = inject(MatDialog);
   route = inject(ActivatedRoute);
+  private http = inject(HttpClient);
 
-  applications = this.jobService.applications;
+isAdmin = signal(false);
+adminApplications = signal<JobApplication[]>([]);
+adminLoading = signal(false);
+adminError = signal('');
+
+applications = computed(() =>
+  this.isAdmin()
+    ? this.adminApplications()
+    : this.jobService.applications()
+);
+
+  
 
   dataSource = new MatTableDataSource<JobApplication>([]);
   pageIndex = 0;
@@ -141,30 +169,72 @@ onPageChange(event: PageEvent): void {
 
   });
 }
-loadApplications() {
+loadApplications(): void {
+  if (this.isAdmin()) {
+    this.adminLoading.set(true);
+    this.adminError.set('');
 
-  this.jobService
-    .loadApplications()
-    .subscribe();
-
+    this.http
+      .get<JobApplication[]>('http://localhost:3000/applications')
+      .subscribe({
+        next: (applications) => {
+          this.adminApplications.set(applications);
+          this.adminLoading.set(false);
+        },
+        error: () => {
+          this.adminError.set(
+            'Unable to load applications. Check whether JSON Server is running.'
+          );
+          this.adminLoading.set(false);
+        }
+      });
+  } else {
+    this.jobService.loadApplications().subscribe();
+  }
 }
 
 
-ngOnInit() {
+ngOnInit(): void {
+  const role = localStorage.getItem('loggedInRole');
 
-  this.loadApplications()
-    
+  this.isAdmin.set(role === 'admin');
 
+  this.displayedColumns = this.isAdmin()
+    ? [
+        'number',
+        'jobTitle',
+        'company',
+        'userEmail',
+        'status',
+        'appliedDate',
+        'createdOn',
+        'modifiedOn',
+        'actions'
+      ]
+    : [
+        'number',
+        'jobTitle',
+        'company',
+        'status',
+        'appliedDate',
+        'createdOn',
+        'modifiedOn',
+        'actions'
+      ];
+
+  this.loadApplications();
 }
 
 
 
-displayedColumns = [
+displayedColumns: string[] = [
   'number',
   'jobTitle',
   'company',
   'status',
   'appliedDate',
+  'createdOn',
+  'modifiedOn',
   'actions'
 ];
 
@@ -211,70 +281,89 @@ displayedColumns = [
  
 
 
-  deleteApplication(id: string) {
-
+  
+deleteApplication(code: string): void {
   const dialogRef = this.dialog.open(ConfirmDialog, {
     width: '380px',
     maxWidth: '90vw',
     panelClass: 'jobtrack-dialog',
-
     data: {
       title: 'Delete Application',
       message: 'Are you sure you want to delete this application?',
       confirmText: 'Delete'
-    },
+    }
   });
-
 
   dialogRef.afterClosed().subscribe(result => {
+    if (result !== true) return;
 
-    if (result === true) {
+    const apiUrl = 'http://localhost:3000/applications';
 
-      this.jobService.deleteApplication(id).subscribe({
+    
+    if (this.isAdmin()) {
+      this.http
+        .get<JobApplication[]>(
+          `${apiUrl}?applicationCode=${encodeURIComponent(code)}`
+        )
+        .subscribe({
+          next: applications => {
+            const application = applications[0];
 
-        next: () => {
+            if (!application) {
+              console.error('Application not found.');
+              return;
+            }
 
-  console.log(
-    'Application deleted successfully'
-  );
+            
+            this.http
+              .delete<void>(`${apiUrl}/${application.id}`)
+              .subscribe({
+                next: () => {
+                 
+                  this.adminApplications.update(apps =>
+                    apps.filter(app => app.applicationCode !== code)
+                  );
+                  this.loadApplications();
+                  console.log('Application deleted successfully.');
+                },
+                error: error => {
+                  console.error('Admin failed to delete application:', error);
+                }
+              });
+          },
+          error: error => {
+            console.error('Failed to find application:', error);
+          }
+        });
 
-  this.loadApplications();
-
-},
-
-        error: (error) => {
-
-          console.error(
-            'Failed to delete application:',
-            error
-          );
-
-        }
-
-      });
-
+      return;
     }
 
+    
+    this.jobService.deleteApplication(code).subscribe({
+      next: () => {
+        this.loadApplications();
+        console.log('Application deleted successfully.');
+      },
+      error: error => {
+        console.error('Failed to delete application:', error);
+      }
+    });
   });
-
 }
+
 
 
   
-editApplication(application: JobApplication) {
-  this.router.navigate([
-    '/add-applications',
-    application.id
-  ]);
+editApplication(application: JobApplication): void {
+  this.router.navigate(['/add-applications', application.applicationCode]);
 }
 
   viewApplication(application: JobApplication) {
-
-    this.router.navigate([
-      '/application-details',
-      application.id
-    ]);
-
-  }
+  this.router.navigate([
+    '/application-details',
+    application.applicationCode
+  ]);
+}
 
 }

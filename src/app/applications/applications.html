@@ -5,19 +5,17 @@
 
 
   <div class="flex justify-between items-center mb-6">
-
     <div>
       <h2 class="text-2xl font-bold text-slate-800">
-        My Applications
+        {{ isAdmin() ? 'All Applications' : 'My Applications' }}
       </h2>
 
       <p class="text-sm text-slate-500">
-        Manage your job applications
+        {{ isAdmin()
+        ? 'Manage applications across the JobTrack platform'
+        : 'Manage your job applications' }}
       </p>
     </div>
-
-
-
   </div>
 
 
@@ -42,25 +40,25 @@
 
     <div class="w-full bg-white px-4 py-5">
 
-     
+
       <div class="grid grid-cols-1 items-start gap-x-4 gap-y-1
               sm:grid-cols-2 xl:grid-cols-[1fr_1fr_0.85fr_0.85fr_auto]">
 
-       
+
         <mat-form-field appearance="outline" class="w-full min-w-0">
           <mat-label>Job Title</mat-label>
           <input matInput [ngModel]="draftJobTitle()" (ngModelChange)="draftJobTitle.set($event)"
             placeholder="Enter job title">
         </mat-form-field>
 
-       
+
         <mat-form-field appearance="outline" class="w-full min-w-0">
           <mat-label>Company</mat-label>
           <input matInput [ngModel]="draftCompany()" (ngModelChange)="draftCompany.set($event)"
             placeholder="Enter company name">
         </mat-form-field>
 
-       
+
         <mat-form-field appearance="outline" class="w-full min-w-0">
           <mat-label>Status</mat-label>
           <mat-select [ngModel]="draftStatus()" (ngModelChange)="draftStatus.set($event)">
@@ -72,7 +70,7 @@
           </mat-select>
         </mat-form-field>
 
-        
+
         <mat-form-field appearance="outline" class="w-full min-w-0">
           <mat-label>Job Type</mat-label>
           <mat-select [ngModel]="draftType()" (ngModelChange)="draftType.set($event)">
@@ -84,7 +82,7 @@
           </mat-select>
         </mat-form-field>
 
-       
+
         <div class="flex items-center justify-end gap-1 pt-1 xl:pl-1">
 
           <button mat-icon-button type="button" matTooltip="Search Applications" aria-label="Search applications"
@@ -105,7 +103,10 @@
   </mat-expansion-panel>
 
 
-  @if (jobService.isLoading()) {
+  @if (
+  (isAdmin() && adminLoading()) ||
+  (!isAdmin() && jobService.isLoading())
+  ) {
 
   <div class="bg-white rounded-xl shadow-sm py-16 text-center">
 
@@ -114,178 +115,190 @@
     </p>
 
   </div>
-
-  } @else if (jobService.apiError()) {
+  } @else if (
+  (isAdmin() && adminError()) ||
+  (!isAdmin() && jobService.apiError())
+  ) {
 
   <div class="bg-white rounded-xl shadow-sm py-16 text-center">
 
     <p class="text-red-500">
-      {{ jobService.apiError() }}
+      {{ isAdmin() ? adminError() : jobService.apiError() }}
     </p>
 
   </div>
 
   } @else {
- 
+
   <div class="bg-white rounded-xl shadow-sm overflow-hidden mt-7">
 
-    <div class="h-[420px] w-full overflow-auto">
+    <div class="h-[380px] w-full overflow-auto">
 
-      <table mat-table [dataSource]="dataSource" matSort class="w-full min-w-[900px] table-fixed bg-white">
+      <table mat-table [dataSource]="dataSource" matSort class="w-full min-w-[1400px] table-fixed bg-white">
 
-       
+
+
 
         <ng-container matColumnDef="number">
-
-          <th mat-header-cell *matHeaderCellDef class="w-16">
+          <th mat-header-cell *matHeaderCellDef
+            class="w-[60px] min-w-[60px] !bg-slate-200 !text-slate-700 font-semibold">
             S.No
           </th>
 
-          <td mat-cell *matCellDef="let app; let i = index" class="w-16 !bg-white !text-slate-700">
-
+          <td mat-cell *matCellDef="let app; let i = index" class="w-[60px] min-w-[60px] !bg-white !text-slate-700">
             {{ (paginator?.pageIndex ?? 0) * (paginator?.pageSize ?? 6) + i + 1 }}
-
-
           </td>
-
         </ng-container>
 
 
-        
 
         <ng-container matColumnDef="jobTitle">
-
           <th mat-header-cell *matHeaderCellDef mat-sort-header
-            class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
-
+            class="w-[150px] min-w-[150px] !bg-slate-200 !text-slate-700 font-semibold">
             Job Title
-
           </th>
 
-          <td mat-cell *matCellDef="let app" class="font-medium w-1/4 !bg-white !text-slate-700">
-
+          <td mat-cell *matCellDef="let app" class="w-[12.5%] font-medium !bg-white !text-slate-700">
             {{ app.jobTitle }}
-
           </td>
-
         </ng-container>
 
 
-        
 
         <ng-container matColumnDef="company">
-
           <th mat-header-cell *matHeaderCellDef mat-sort-header
-            class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
-
+            class="w-[130px] min-w-[130px] !bg-slate-200 !text-slate-700 font-semibold">
             Company
-
           </th>
 
-          <td mat-cell *matCellDef="let app" class="w-1/4 !bg-white !text-slate-700">
-
+          <td mat-cell *matCellDef="let app" class="w-[12.5%] !bg-white !text-slate-700">
             {{ app.company }}
-
           </td>
-
         </ng-container>
 
-
-   
-
-        <ng-container matColumnDef="status">
-
-          <th mat-header-cell *matHeaderCellDef mat-sort-header
-            class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
-
-            Status
-
+        @if (isAdmin()) {
+        <ng-container matColumnDef="userEmail">
+          <th mat-header-cell *matHeaderCellDef
+            class="w-[200px] min-w-[200px] !bg-slate-200 !text-slate-700 font-semibold">
+            User Email
           </th>
 
-          <td mat-cell *matCellDef="let app" class="w-1/4 !bg-white !text-slate-700">
+          <td mat-cell *matCellDef="let app" class="w-[200px] min-w-[200px] !bg-white !text-slate-700">
+            <span class="block truncate" [title]="app.userEmail">
+              {{ app.userEmail }}
+            </span>
+          </td>
+        </ng-container>
+        }
 
+
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+            class="w-[110px] min-w-[110px] !bg-slate-200 !text-slate-700 font-semibold">
+            Status
+          </th>
+
+          <td mat-cell *matCellDef="let app" class="w-[12.5%] !bg-white !text-slate-700">
             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
               [class.bg-blue-100]="app.status === 'Applied'" [class.text-blue-700]="app.status === 'Applied'"
               [class.bg-yellow-100]="app.status === 'Interview'" [class.text-yellow-700]="app.status === 'Interview'"
               [class.bg-green-100]="app.status === 'Selected'" [class.text-green-700]="app.status === 'Selected'"
               [class.bg-red-100]="app.status === 'Rejected'" [class.text-red-700]="app.status === 'Rejected'">
-
               {{ app.status }}
-
             </span>
-
           </td>
-
         </ng-container>
 
 
-      
 
         <ng-container matColumnDef="appliedDate">
-
           <th mat-header-cell *matHeaderCellDef mat-sort-header
-            class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
+            class="w-[140px] min-w-[140px] whitespace-nowrap !bg-slate-200 !text-slate-700 font-semibold">
             Scheduled Date
           </th>
 
-          <td mat-cell *matCellDef="let app" class="w-1/4 !bg-white !text-slate-700">
-
-            {{ app.appliedDate }}
-
+          <td mat-cell *matCellDef="let app" class="w-[12.5%] whitespace-nowrap !bg-white !text-slate-700">
+            {{ app.appliedDate ? (app.appliedDate | date:'dd-MM-yyyy') : '—' }}
           </td>
-
         </ng-container>
 
 
-       
+
+        <ng-container matColumnDef="createdOn">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+            class="w-[120px] min-w-[120px] whitespace-nowrap !bg-slate-200 !text-slate-700 font-semibold">
+            Created On
+          </th>
+
+          <td mat-cell *matCellDef="let app" class="w-[12.5%] whitespace-nowrap !bg-white !text-slate-700">
+            {{ app.createdOn ? (app.createdOn | date:'dd-MM-yyyy') : '—' }}
+          </td>
+        </ng-container>
+
+
+
+        <ng-container matColumnDef="modifiedOn">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+            class="w-[120px] min-w-[120px] whitespace-nowrap !bg-slate-200 !text-slate-700 font-semibold">
+            Modified On
+          </th>
+
+          <td mat-cell *matCellDef="let app" class="w-[12.5%] whitespace-nowrap !bg-white !text-slate-700">
+            {{ app.modifiedOn ? (app.modifiedOn | date:'dd-MM-yyyy') : '—' }}
+          </td>
+        </ng-container>
+
+
 
         <ng-container matColumnDef="actions">
-
-          <th mat-header-cell *matHeaderCellDef class="w-1/4 !bg-slate-200 !text-slate-700 font-semibold">
+          <th mat-header-cell *matHeaderCellDef class="w-[150px] min-w-[150px] !bg-slate-200 !text-slate-700 font-semibold">
             Actions
           </th>
 
-          <td mat-cell *matCellDef="let app" class="w-1/4 !bg-white !text-slate-700">
-
+          <td mat-cell *matCellDef="let app" class="w-[12.5%] !bg-white !text-slate-700">
             <app-application-card [application]="app" (viewApplication)="viewApplication($event)"
               (deleteApplication)="deleteApplication($event)" (editApplication)="editApplication($event)">
             </app-application-card>
-
           </td>
-
         </ng-container>
 
-        
+
+
+
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="!bg-slate-200 text-slate-700">
         </tr>
 
 
-        
+
 
         <tr mat-row *matRowDef="let row; columns: displayedColumns" class="!bg-white hover:!bg-slate-50">
         </tr>
 
 
-        
 
-        @if (filteredApplications().length === 0) {
-        <tr>
-          <td colspan="6" class="text-center py-16">
-            <p class="text-slate-500">No applications found.</p>
+
+        <tr *matNoDataRow>
+          <td [attr.colspan]="displayedColumns.length" class="!bg-white !text-center !py-16">
+
+            <p class="text-slate-500">
+              No applications found.
+            </p>
+
             <p class="text-sm text-slate-400 mt-2">
               Try changing your search or filters.
             </p>
+
           </td>
         </tr>
-        }
 
       </table>
 
     </div>
 
 
-    
+
 
     <mat-paginator [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="[6, 10, 20]"
       [showFirstLastButtons]="true" (page)="onPageChange($event)" aria-label="Job application pagination" class="!bg-white !text-slate-700 border-t border-slate-200

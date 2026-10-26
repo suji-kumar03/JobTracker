@@ -1,6 +1,6 @@
-<div class="flex items-center gap-2">
 
- 
+<div class="flex items-center gap-2">
+  
   <button
     type="button"
     (click)="view()"
@@ -8,27 +8,27 @@
     matTooltip="View Application"
     matTooltipPosition="above"
     class="action-btn view-btn">
-
     <mat-icon>visibility</mat-icon>
-
   </button>
 
+  
+  @if (
+    !isAdmin() &&
+    application().status !== 'Selected' &&
+    application().status !== 'Rejected'
+  ) {
+    <button
+      type="button"
+      (click)="edit()"
+      mat-icon-button
+      matTooltip="Edit Application"
+      matTooltipPosition="above"
+      class="action-btn edit-btn">
+      <mat-icon>edit</mat-icon>
+    </button>
+  }
 
  
-  <button
-    type="button"
-    (click)="edit()"
-    mat-icon-button
-    matTooltip="Edit Application"
-    matTooltipPosition="above"
-    class="action-btn edit-btn">
-
-    <mat-icon>edit</mat-icon>
-
-  </button>
-
-
-
   <button
     type="button"
     (click)="delete()"
@@ -36,9 +36,6 @@
     matTooltip="Delete Application"
     matTooltipPosition="above"
     class="action-btn delete-btn">
-
     <mat-icon>delete</mat-icon>
-
   </button>
-
 </div>

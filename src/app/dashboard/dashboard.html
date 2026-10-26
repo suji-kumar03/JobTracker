@@ -1,284 +1,287 @@
+@if (isAdmin()) {
+
 <div class="w-full">
 
-
   <div class="mb-6">
-
-    <h2 class="text-xl sm:text-2xl font-bold text-slate-800">
-      Dashboard
-    </h2>
-
-    <p class="text-sm text-slate-500 mt-1">
-      Overview of your job applications
+    <h1 class="text-2xl font-bold text-slate-800">
+      Admin Dashboard
+    </h1>
+    <p class="mt-1 text-sm text-slate-500">
+      Overview of your JobTrack platform
     </p>
+  </div>
+
+  @if (isLoading()) {
+  <div class="rounded-xl border border-slate-200 bg-white p-8 text-center text-slate-500">
+    Loading dashboard...
+  </div>
+  } @else if (errorMessage()) {
+  <div class="rounded-xl border border-red-200 bg-white p-6 text-red-600">
+    {{ errorMessage() }}
+  </div>
+  } @else {
+
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+
+    <div class="rounded-xl bg-white p-5 shadow-sm">
+      <p class="text-sm text-slate-500">Total Users</p>
+      <h2 class="mt-2 text-2xl font-bold text-violet-600">
+        {{ totalUsers() }}
+      </h2>
+    </div>
+
+    <div class="rounded-xl bg-white p-5 shadow-sm">
+      <p class="text-sm text-slate-500">Total Applications</p>
+      <h2 class="mt-2 text-2xl font-bold text-slate-800">
+        {{ adminTotalApplications() }}
+      </h2>
+    </div>
+
+    <div class="rounded-xl bg-white p-5 shadow-sm">
+      <p class="text-sm text-slate-500">Applied</p>
+      <h2 class="mt-2 text-2xl font-bold text-blue-600">
+        {{ adminApplied() }}
+      </h2>
+    </div>
+
+    <div class="rounded-xl bg-white p-5 shadow-sm">
+      <p class="text-sm text-slate-500">Interview</p>
+      <h2 class="mt-2 text-2xl font-bold text-purple-600">
+        {{ adminInterview() }}
+      </h2>
+    </div>
+
+    <div class="rounded-xl bg-white p-5 shadow-sm">
+      <p class="text-sm text-slate-500">Selected</p>
+      <h2 class="mt-2 text-2xl font-bold text-green-600">
+        {{ adminSelected() }}
+      </h2>
+    </div>
+
+    <div class="rounded-xl bg-white p-5 shadow-sm">
+      <p class="text-sm text-slate-500">Rejected</p>
+      <h2 class="mt-2 text-2xl font-bold text-red-500">
+        {{ adminRejected() }}
+      </h2>
+    </div>
 
   </div>
 
+  <div class="mt-6 rounded-xl bg-white p-4 shadow-sm sm:p-6">
 
-  
-  <div
-    class="grid
-           grid-cols-1
-           
-           sm:grid-cols-2
-           lg:grid-cols-5
-           gap-3 sm:gap-4">
+    <div class="mb-5 flex items-center justify-between">
+      <h2 class="text-lg font-semibold text-slate-800">
+        Recent Applications
+      </h2>
 
-    <div class="bg-white rounded-xl shadow-sm p-4">
-      <p class="text-sm text-slate-500">
-        Total Applications
-      </p>
+      <a routerLink="/admin/applications" class="text-sm font-semibold text-violet-600 hover:text-violet-700">
+        View All
+      </a>
+    </div>
 
-      <h3 class="text-xl sm:text-2xl font-bold mt-2">
+    @if (adminRecentApplications().length === 0) {
+    <p class="py-6 text-center text-sm text-slate-500">
+      No applications found.
+    </p>
+    } @else {
+
+
+    <div class="overflow-x-auto rounded-lg border border-slate-200">
+      <table class="w-full min-w-[800px] table-fixed bg-white text-left text-sm">
+
+        <thead>
+          <tr class="sticky top-0 z-10 bg-slate-200 text-slate-700">
+            <th class="w-[22%] px-4 py-3 font-semibold">Job Title</th>
+            <th class="w-[20%] px-4 py-3 font-semibold">Company</th>
+            <th class="w-[35%] px-4 py-3 font-semibold">User Email</th>
+            <th class="w-[23%] px-4 py-3 font-semibold">Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (app of adminRecentApplications(); track app.id) {
+          <tr class="border-b border-slate-100 bg-white text-slate-700 transition-colors hover:bg-slate-50">
+
+            <td class="break-words px-4 py-4 font-medium">
+              {{ app.jobTitle }}
+            </td>
+
+            <td class="break-words px-4 py-4">
+              {{ app.company }}
+            </td>
+
+            <td class="break-all px-4 py-4">
+              {{ app.userEmail }}
+            </td>
+
+            <td class="px-4 py-4">
+              <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium"
+                [class.bg-blue-100]="app.status === 'Applied'" [class.text-blue-700]="app.status === 'Applied'"
+                [class.bg-yellow-100]="app.status === 'Interview'" [class.text-yellow-700]="app.status === 'Interview'"
+                [class.bg-green-100]="app.status === 'Selected'" [class.text-green-700]="app.status === 'Selected'"
+                [class.bg-red-100]="app.status === 'Rejected'" [class.text-red-700]="app.status === 'Rejected'">
+                {{ app.status }}
+              </span>
+            </td>
+
+          </tr>
+          }
+        </tbody>
+
+      </table>
+    </div>
+
+
+    }
+
+  </div>
+
+  }
+
+</div>
+
+} @else {
+
+
+
+<div class="w-full">
+
+  <div class="mb-6">
+    <h2 class="text-xl font-bold text-slate-800 sm:text-2xl">
+      Dashboard
+    </h2>
+    <p class="mt-1 text-sm text-slate-500">
+      Overview of your job applications
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-5">
+
+    <div class="rounded-xl bg-white p-4 shadow-sm">
+      <p class="text-sm text-slate-500">Total Applications</p>
+      <h3 class="mt-2 text-xl font-bold sm:text-2xl">
         {{ totalApplications() }}
       </h3>
     </div>
 
-
-    <div class="bg-white rounded-xl shadow-sm p-4">
-      <p class="text-sm text-slate-500">
-        Applied
-      </p>
-
-      <h3 class="text-xl sm:text-2xl font-bold text-blue-600 mt-2">
+    <div class="rounded-xl bg-white p-4 shadow-sm">
+      <p class="text-sm text-slate-500">Applied</p>
+      <h3 class="mt-2 text-xl font-bold text-blue-600 sm:text-2xl">
         {{ appliedCount() }}
       </h3>
     </div>
 
-
-    <div class="bg-white rounded-xl shadow-sm p-4">
-      <p class="text-sm text-slate-500">
-        Interview
-      </p>
-
-      <h3 class="text-xl sm:text-2xl font-bold text-purple-600 mt-2">
+    <div class="rounded-xl bg-white p-4 shadow-sm">
+      <p class="text-sm text-slate-500">Interview</p>
+      <h3 class="mt-2 text-xl font-bold text-purple-600 sm:text-2xl">
         {{ interviewCount() }}
       </h3>
     </div>
 
-
-    <div class="bg-white rounded-xl shadow-sm p-4">
-      <p class="text-sm text-slate-500">
-        Selected
-      </p>
-
-      <h3 class="text-xl sm:text-2xl font-bold text-green-600 mt-2">
+    <div class="rounded-xl bg-white p-4 shadow-sm">
+      <p class="text-sm text-slate-500">Selected</p>
+      <h3 class="mt-2 text-xl font-bold text-green-600 sm:text-2xl">
         {{ selectedCount() }}
       </h3>
     </div>
 
-
-    <div class="bg-white rounded-xl shadow-sm p-4">
-      <p class="text-sm text-slate-500">
-        Rejected
-      </p>
-
-      <h3 class="text-xl sm:text-2xl font-bold text-red-500 mt-2">
+    <div class="rounded-xl bg-white p-4 shadow-sm">
+      <p class="text-sm text-slate-500">Rejected</p>
+      <h3 class="mt-2 text-xl font-bold text-red-500 sm:text-2xl">
         {{ rejectedCount() }}
       </h3>
     </div>
 
   </div>
 
+  <div class="mt-4 grid grid-cols-1 gap-4 sm:mt-6 sm:gap-6 lg:grid-cols-2">
 
- 
-  <div
-    class="grid
-           grid-cols-1
-           lg:grid-cols-2
-           gap-4 sm:gap-6
-           mt-4 sm:mt-6">
-
-
-   
-    <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6">
-
-      <h3 class="text-lg font-semibold text-slate-800 mb-6">
+    <div class="rounded-xl bg-white p-4 shadow-sm sm:p-6">
+      <h3 class="mb-6 text-lg font-semibold text-slate-800">
         Application Summary
       </h3>
 
-
       <div class="flex justify-center">
-
         <div
-          class="w-36 h-36 sm:w-44 sm:h-44
-                 rounded-full
-                 bg-gradient-to-r
-                 from-violet-600
-                 via-blue-500
-                 to-green-400
-                 flex items-center justify-center">
-
-          <div
-            class="w-24 h-24 sm:w-28 sm:h-28
-                   bg-white rounded-full
-                   flex flex-col items-center justify-center">
-
-            <span class="text-2xl sm:text-3xl font-bold">
+          class="flex h-36 w-36 items-center justify-center rounded-full bg-gradient-to-r from-violet-600 via-blue-500 to-green-400 sm:h-44 sm:w-44">
+          <div class="flex h-24 w-24 flex-col items-center justify-center rounded-full bg-white sm:h-28 sm:w-28">
+            <span class="text-2xl font-bold sm:text-3xl">
               {{ totalApplications() }}
             </span>
-
-            <span class="text-xs text-slate-500">
-              Total
-            </span>
-
+            <span class="text-xs text-slate-500">Total</span>
           </div>
-
         </div>
-
       </div>
-
 
       <div class="mt-6 space-y-3">
-
         <div class="flex justify-between text-sm">
-          <span class="text-slate-600">
-            Applied
-          </span>
-
-          <span class="font-semibold">
-            {{ appliedCount() }}
-          </span>
+          <span class="text-slate-600">Applied</span>
+          <span class="font-semibold">{{ appliedCount() }}</span>
         </div>
-
         <div class="flex justify-between text-sm">
-          <span class="text-slate-600">
-            Interview
-          </span>
-
-          <span class="font-semibold">
-            {{ interviewCount() }}
-          </span>
+          <span class="text-slate-600">Interview</span>
+          <span class="font-semibold">{{ interviewCount() }}</span>
         </div>
-
         <div class="flex justify-between text-sm">
-          <span class="text-slate-600">
-            Selected
-          </span>
-
-          <span class="font-semibold">
-            {{ selectedCount() }}
-          </span>
+          <span class="text-slate-600">Selected</span>
+          <span class="font-semibold">{{ selectedCount() }}</span>
         </div>
-
         <div class="flex justify-between text-sm">
-          <span class="text-slate-600">
-            Rejected
-          </span>
-
-          <span class="font-semibold">
-            {{ rejectedCount() }}
-          </span>
+          <span class="text-slate-600">Rejected</span>
+          <span class="font-semibold">{{ rejectedCount() }}</span>
         </div>
-
       </div>
-
     </div>
 
-
-  
-    <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6">
-
-      <div class="flex items-center justify-between mb-5">
-
+    <div class="rounded-xl bg-white p-4 shadow-sm sm:p-6">
+      <div class="mb-5 flex items-center justify-between">
         <h3 class="text-lg font-semibold text-slate-800">
           Recent Applications
         </h3>
-
-       <a
-  routerLink="/applications"
-  class="text-sm text-violet-600 font-semibold
-         hover:text-violet-700">
-  View All
-  </a>
-
+        <a routerLink="/applications" class="text-sm font-semibold text-violet-600 hover:text-violet-700">
+          View All
+        </a>
       </div>
-
 
       <div class="space-y-4">
-
         @for (app of recentApplications(); track app.id) {
-
-          <div
-            class="flex flex-col
-                   sm:flex-row
-                   sm:items-center
-                   sm:justify-between
-                   gap-2
-                   border-b border-slate-100
-                   pb-3">
-
-            <div class="min-w-0">
-
-              <p class="font-medium text-slate-800 truncate">
-                {{ app.jobTitle }}
-              </p>
-
-              <p class="text-sm text-slate-500 truncate">
-                {{ app.company }}
-              </p>
-
-            </div>
-
-
-            @if (app.status === 'Applied') {
-
-              <span
-                class="self-start
-                       text-xs px-3 py-1
-                       rounded-full
-                       bg-blue-100 text-blue-700">
-                {{ app.status }}
-              </span>
-
-            }
-
-            @if (app.status === 'Interview') {
-
-              <span
-                class="self-start
-                       text-xs px-3 py-1
-                       rounded-full
-                       bg-purple-100 text-purple-700">
-                {{ app.status }}
-              </span>
-
-            }
-
-            @if (app.status === 'Selected') {
-
-              <span
-                class="self-start
-                       text-xs px-3 py-1
-                       rounded-full
-                       bg-green-100 text-green-700">
-                {{ app.status }}
-              </span>
-
-            }
-
-            @if (app.status === 'Rejected') {
-
-              <span
-                class="self-start
-                       text-xs px-3 py-1
-                       rounded-full
-                       bg-red-100 text-red-700">
-                {{ app.status }}
-              </span>
-
-            }
-
+        <div class="flex flex-col gap-2 border-b border-slate-100 pb-3 sm:flex-row sm:items-center sm:justify-between">
+          <div class="min-w-0">
+            <p class="truncate font-medium text-slate-800">
+              {{ app.jobTitle }}
+            </p>
+            <p class="truncate text-sm text-slate-500">
+              {{ app.company }}
+            </p>
           </div>
 
+          @if (app.status === 'Applied') {
+          <span class="self-start rounded-full bg-blue-100 px-3 py-1 text-xs text-blue-700">
+            {{ app.status }}
+          </span>
+          }
+          @if (app.status === 'Interview') {
+          <span class="self-start rounded-full bg-purple-100 px-3 py-1 text-xs text-purple-700">
+            {{ app.status }}
+          </span>
+          }
+          @if (app.status === 'Selected') {
+          <span class="self-start rounded-full bg-green-100 px-3 py-1 text-xs text-green-700">
+            {{ app.status }}
+          </span>
+          }
+          @if (app.status === 'Rejected') {
+          <span class="self-start rounded-full bg-red-100 px-3 py-1 text-xs text-red-700">
+            {{ app.status }}
+          </span>
+          }
+        </div>
         }
-
       </div>
-
     </div>
 
   </div>
- 
-
- 
 
 </div>
+
+}

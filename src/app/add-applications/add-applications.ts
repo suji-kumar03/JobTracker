@@ -1,6 +1,6 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Job } from '../services/job';
+import { Job, JobApplication } from '../services/job';
 import {
   ReactiveFormsModule,
   FormGroup,
@@ -15,7 +15,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ConfirmDialog } from '../confirm-dialog/confirm-dialog';
-
+import { Auth } from '../services/auth';
 @Component({
   selector: 'app-add-applications',
   standalone: true,
@@ -62,7 +62,10 @@ export class AddApplications implements OnInit {
     requirements: new FormControl('', [
       Validators.maxLength(150)
     ]),
-    isRemote: new FormControl(false)
+    isRemote: new FormControl(false),
+
+
+
   });
 
   today = new Date().toISOString().split('T')[0];
@@ -70,21 +73,25 @@ export class AddApplications implements OnInit {
   editId = signal<string | null>(null);
 
   private originalFormValue: string | null = null;
+  private auth = inject(Auth);
+  private originalApplication: JobApplication | null = null;
 
   constructor(
     private jobService: Job,
     private router: Router,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar,
+
+  ) { }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {
-      this.jobService.getApplicationById(id).subscribe({
+      this.jobService.getApplicationByCode(id).subscribe({
         next: (application) => {
+          this.originalApplication = application;
           this.editId.set(application.id);
 
           this.jobForm.patchValue({
@@ -99,7 +106,17 @@ export class AddApplications implements OnInit {
             isRemote: application.isRemote
           });
 
+
           this.originalFormValue = this.getFormSnapshot();
+
+
+          if (
+            application.status === 'Selected' ||
+            application.status === 'Rejected'
+          ) {
+            this.jobForm.get('status')?.disable();
+          }
+
         },
         error: (error) => {
           console.error('Failed to load application:', error);
@@ -126,26 +143,32 @@ export class AddApplications implements OnInit {
     });
   }
 
-  loadDefaultJobType() {
-    const loggedInEmail = localStorage.getItem('loggedInEmail');
-    const savedUsers = localStorage.getItem('users');
+  
+loadDefaultJobType() {
+  const loggedInEmail = localStorage.getItem('loggedInEmail');
 
-    if (!loggedInEmail || !savedUsers) {
-      return;
-    }
-
-    const users = JSON.parse(savedUsers);
-
-    const currentUser = users.find(
-      (user: any) => user.email === loggedInEmail
-    );
-
-    if (currentUser?.defaultJobType) {
-      this.jobForm.patchValue({
-        jobType: currentUser.defaultJobType
-      });
-    }
+  if (!loggedInEmail) {
+    return;
   }
+
+  this.auth.getUsers().subscribe({
+    next: users => {
+      const currentUser = users.find(
+        user => user.email.toLowerCase() === loggedInEmail.toLowerCase()
+      );
+
+      if (currentUser?.defaultJobType) {
+        this.jobForm.patchValue({
+          jobType: currentUser.defaultJobType
+        });
+      }
+    },
+    error: error => {
+      console.error('Failed to load default job type:', error);
+    }
+  });
+}
+
 
   saveApplication() {
     this.jobForm.markAllAsTouched();
@@ -187,6 +210,7 @@ export class AddApplications implements OnInit {
       description: formValue.description ?? '',
       requirements: formValue.requirements ?? '',
       isRemote: formValue.isRemote ?? false
+
     };
 
 
@@ -204,10 +228,12 @@ export class AddApplications implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         if (result === true) {
-          const updatedApplication = {
+          const updatedApplication: JobApplication = {
+            ...this.originalApplication!,
             ...application,
-            id: this.editId()!,
-            userEmail: localStorage.getItem('loggedInEmail')!
+            id: this.originalApplication!.id,
+            applicationCode: this.originalApplication!.applicationCode,
+            userEmail: this.originalApplication!.userEmail
           };
 
           this.jobService.updateApplication(updatedApplication).subscribe({
@@ -235,7 +261,7 @@ export class AddApplications implements OnInit {
       return;
     }
 
-  
+
     this.jobService.addApplication(application).subscribe({
       next: () => {
         this.jobService.loadApplications().subscribe({

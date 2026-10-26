@@ -2,66 +2,39 @@
   display: block;
 }
 
-/* Sidebar icons */
-aside mat-icon {
-  color: white !important;
-}
-
-/* Sidebar links */
-aside a {
-  color: #cbd5e1;
-}
-
-/* Sidebar link hover */
-aside a:hover {
-  background-color: #1e293b;
-  color: white;
-}
-
-/* Header Material icons */
-header mat-icon {
-  color: white !important;
-}
-
-/* Profile button */
-header button {
-  color: white !important;
-}
-
-/* ================= GLOBAL SEARCH ================= */
 
 .global-search-field {
   color: white;
 }
 
-/* Input text */
+
 .global-search-field ::ng-deep .mdc-text-field__input {
   color: white !important;
 }
 
-/* Placeholder */
+
 .global-search-field ::ng-deep .mdc-text-field__input::placeholder {
   color: #cbd5e1 !important;
 }
 
-/* Label */
+
 .global-search-field ::ng-deep .mdc-floating-label {
   color: white !important;
 }
 
-/* Label when focused */
+
 .global-search-field ::ng-deep .mdc-floating-label--float-above {
   color: white !important;
 }
 
-/* Outline */
+
 .global-search-field ::ng-deep .mdc-notched-outline__leading,
 .global-search-field ::ng-deep .mdc-notched-outline__notch,
 .global-search-field ::ng-deep .mdc-notched-outline__trailing {
   border-color: white !important;
 }
 
-/* Outline when focused */
+
 .global-search-field ::ng-deep .mdc-text-field--focused
 .mdc-notched-outline__leading,
 .global-search-field ::ng-deep .mdc-text-field--focused
@@ -71,7 +44,7 @@ header button {
   border-color: white !important;
 }
 
-/* Close icon */
+
 .global-search-field ::ng-deep button mat-icon {
   color: white !important;
 }

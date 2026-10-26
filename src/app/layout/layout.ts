@@ -1,99 +1,139 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Component, OnInit, OnDestroy, signal, inject } from '@angular/core';
+import {
+  Router,
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet
+} from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+
 import { Job } from '../services/job';
+import { Auth } from '../services/auth';
 
 @Component({
   selector: 'app-layout',
-
+  standalone: true,
   imports: [
-    RouterLink,
-    RouterOutlet,
-    FormsModule,
-    MatIconModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatTooltipModule,MatFormFieldModule,
-    MatInputModule
-  ],
-
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+  FormsModule,
+  MatIconModule,
+  MatButtonModule,
+  MatMenuModule,
+  MatTooltipModule,
+  MatFormFieldModule,
+  MatInputModule
+],
   templateUrl: './layout.html',
   styleUrl: './layout.css'
 })
-export class Layout implements OnInit {
+export class Layout implements OnInit, OnDestroy {
 
+  private router = inject(Router);
+  private jobService = inject(Job);
+  private auth = inject(Auth);
 
   sidebarExpanded = signal(false);
-
-  
   userName = signal('');
   globalSearch = signal('');
   searchOpen = signal(false);
-  
+  isAdmin = signal(false);
 
-  constructor(
-    private router: Router,
-    private jobService: Job
-  ) {}
+  private profileUpdatedHandler = () => {
+    this.loadCurrentUser();
+  };
 
   ngOnInit() {
+    this.loadCurrentUser();
 
-    const savedUsers = localStorage.getItem('users');
-    const loggedInEmail = localStorage.getItem('loggedInEmail');
-
-    if (savedUsers && loggedInEmail) {
-
-      const users = JSON.parse(savedUsers);
-
-      const user = users.find(
-        (u: any) => u.email === loggedInEmail
-      );
-
-      if (user) {
-        this.userName.set(user.name);
-      }
-    }
+    window.addEventListener(
+      'profileUpdated',
+      this.profileUpdatedHandler
+    );
   }
 
- 
+  loadCurrentUser() {
+    const loggedInEmail = localStorage.getItem('loggedInEmail');
+    const loggedInRole = localStorage.getItem('loggedInRole');
+
+    this.isAdmin.set(loggedInRole === 'admin');
+
+    if (!loggedInEmail) {
+      this.userName.set('');
+      return;
+    }
+
+    this.auth.getUsers().subscribe({
+      next: users => {
+        const user = users.find(
+          u => u.email.toLowerCase() === loggedInEmail.toLowerCase()
+        );
+
+       
+        if (user && user.role === loggedInRole) {
+          this.userName.set(user.name);
+        } else {
+          this.userName.set('');
+        }
+      },
+      error: error => {
+        console.error('Failed to load user:', error);
+        this.userName.set('');
+      }
+    });
+  }
+
   toggleSidebar() {
     this.sidebarExpanded.update(
       expanded => !expanded
     );
   }
+
   collapseSidebar() {
-  this.sidebarExpanded.set(false);
-}
-toggleSearch() {
-  this.searchOpen.update(
-    open => !open
-  );
-}
-closeSearch() {
-  this.searchOpen.set(false);
-  this.globalSearch.set('');
+    this.sidebarExpanded.set(false);
+  }
 
-  this.router.navigate(
-    ['/applications'],
-    {
-      queryParams: {
-        search: null
-      }
-    }
-  );
-}
- searchApplications() {
+  toggleSearch() {
+    this.searchOpen.update(
+      open => !open
+    );
+  }
 
-    const search = this.globalSearch().trim();
+  closeSearch() {
+    this.searchOpen.set(false);
+    this.globalSearch.set('');
+
+    const applicationsRoute = this.isAdmin()
+      ? '/admin/applications'
+      : '/applications';
 
     this.router.navigate(
-      ['/applications'],
+      [applicationsRoute],
+      {
+        queryParams: {
+          search: null
+        }
+      }
+    );
+  }
+
+  searchApplications() {
+    const search = this.globalSearch().trim();
+
+    const applicationsRoute = this.isAdmin()
+      ? '/admin/applications'
+      : '/applications';
+
+    this.router.navigate(
+      [applicationsRoute],
       {
         queryParams: {
           search: search || null
@@ -103,11 +143,19 @@ closeSearch() {
   }
 
   logout() {
-
     localStorage.removeItem('loggedInEmail');
+    localStorage.removeItem('loggedInUserCode');
+    localStorage.removeItem('loggedInRole');
 
-    this.jobService.applications.set([]);
+    this.jobService.clearApplications();
 
     this.router.navigate(['/login']);
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener(
+      'profileUpdated',
+      this.profileUpdatedHandler
+    );
   }
 }
